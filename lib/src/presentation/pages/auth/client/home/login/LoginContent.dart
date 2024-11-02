@@ -48,8 +48,8 @@ class LoginContent extends StatelessWidget {
                   _TextFieldPassword(),
                   SizedBox(height: 30), // Espacio mayor antes de los botones
                   _buttonLogin(context),
-                  SizedBox(height: 10),
-                  _buttonRegister(context),
+                  //SizedBox(height: 10),
+                  //_buttonRegister(context),
                 ],
               ),
             ),
@@ -159,8 +159,8 @@ class LoginContent extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buttonRegister(BuildContext context) {
+}
+  /*Widget _buttonRegister(BuildContext context) {
     return Container(
       width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 10),
@@ -182,4 +182,4 @@ class LoginContent extends StatelessWidget {
       ),
     );
   }
-}
+}*/

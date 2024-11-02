@@ -4,7 +4,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sppp/Injection.dart';
 import 'package:sppp/src/presentation/pages/admin/home/AdminHomePage.dart';
 import 'package:sppp/src/presentation/pages/admin/home/AdminUserList.dart';
-import 'package:sppp/src/presentation/pages/admin/roles/create/RolesCreatePage.dart';
+import 'package:sppp/src/presentation/pages/admin/practice/PracticePage.dart';
+import 'package:sppp/src/presentation/pages/admin/registerpractice/RegisterPracticePage.dart';
 import 'package:sppp/src/presentation/pages/auth/client/home/login/LoginInitial.dart';
 import 'package:sppp/src/presentation/pages/auth/client/home/login/LoginPage.dart';
 import 'package:sppp/src/presentation/pages/auth/client/home/register/RegisterPage.dart';
@@ -41,7 +42,9 @@ class MyApp extends StatelessWidget {
               'client/home': (BuildContext context) => ClientHomePage(),
               'admin/home': (BuildContext context) => AdminHomePage(),
               'usuarios': (BuildContext context) => AdminUserList(),
-              'create/roles': (BuildContext context) => RolesCreatePage()
+              'admin/practicas': (BuildContext context) =>
+                  RegisterPracticePage(),
+              'admin/viewpracticas': (BuildContext context) => PracticePage()
             }));
   }
 }

@@ -7,8 +7,8 @@ class RolesRepositoryImpl implements RolesRepository {
   RolesService rolesService;
   RolesRepositoryImpl(this.rolesService);
   @override
-  Future<Resource<Roles>> create(Roles rol) {
-    return rolesService.create(rol);
+  Future<Resource<Roles>> create(Roles roles) {
+    return rolesService.create(roles);
   }
 
   @override

@@ -1,18 +1,18 @@
 class Roles {
-  String id;
+  String? id;
   String name;
-  String image;
+  String? image;
   String route;
-  DateTime createdAt;
-  DateTime updatedAt;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
   Roles({
-    required this.id,
+    this.id,
     required this.name,
-    required this.image,
+    this.image,
     required this.route,
-    required this.createdAt,
-    required this.updatedAt,
+    this.createdAt,
+    this.updatedAt,
   });
 
   // Método para imprimir los roles
@@ -39,7 +39,7 @@ class Roles {
         "name": name,
         "image": image,
         "route": route,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
       };
 }

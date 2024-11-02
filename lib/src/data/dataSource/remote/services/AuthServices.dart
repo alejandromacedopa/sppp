@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as https;
 import 'package:sppp/src/data/api/ApiConfig.dart';
 import 'package:sppp/src/domain/utils/ListToString.dart';
 import 'package:sppp/src/domain/utils/Resource.dart';
@@ -19,7 +19,7 @@ class AuthServices {
         'password': password,
       });
 
-      final response = await http.post(url, headers: headers, body: body);
+      final response = await https.post(url, headers: headers, body: body);
       final data = json.decode(response.body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -36,11 +36,11 @@ class AuthServices {
 
   Future<Resource<AuthResponse>> register(User user) async {
     try {
-      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/auth/register');
+      Uri url = Uri.http(ApiConfig.API_ECOMMERCE, '/auth/register');
       Map<String, String> headers = {"Content-Type": "application/json"};
       String body = json.encode(user);
 
-      final response = await http.post(url, headers: headers, body: body);
+      final response = await https.post(url, headers: headers, body: body);
       final data = json.decode(response.body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -60,7 +60,7 @@ class AuthServices {
       // hhtp://192.168.1.89:3000/roles
       Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/users');
       Map<String, String> headers = {"Content-Type": "application/json"};
-      final response = await http.get(url, headers: headers);
+      final response = await https.get(url, headers: headers);
       final data = json.decode(response.body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
