@@ -3,183 +3,176 @@ import 'package:sppp/src/presentation/pages/auth/client/home/login/bloc/LoginBlo
 import 'package:sppp/src/presentation/pages/auth/client/home/login/bloc/LoginEvent.dart';
 import 'package:sppp/src/presentation/pages/auth/client/home/login/bloc/LoginState.dart';
 import 'package:sppp/src/presentation/utils/BlocFormItem.dart';
-import 'package:sppp/src/presentation/widget/DefaultIconBack.dart';
-import 'package:sppp/src/presentation/widget/DefaultTextField.dart'; // Asegúrate de tener la importación
 
 class LoginContent extends StatelessWidget {
-  LoginBloc? bloc;
-  LoginState state;
+  final LoginBloc? bloc;
+  final LoginState state;
 
   LoginContent(this.bloc, this.state);
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: state.formKey,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          _imageBackground(context),
-          SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 35),
-              width: MediaQuery.of(context).size.width * 0.75,
-              decoration: BoxDecoration(
-                color:
-                    Colors.white.withOpacity(0.9), // Fondo blanco con opacidad
-                borderRadius: BorderRadius.all(Radius.circular(25)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.15),
-                    spreadRadius: 5,
-                    blurRadius: 10,
-                    offset: Offset(0, 4),
-                  ),
-                ],
+    return Scaffold(
+      backgroundColor: Color(0xFF0A3D62), // Fondo azul oscuro
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.orange, // Fondo amarillo del círculo
+                ),
+                child: Icon(
+                  Icons.person, // Ícono de usuario
+                  size: 92, // Tamaño ajustado del ícono
+                  color: Color(0xFF0A3D62), // Color blanco del ícono
+                ),
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(height: 20),
-                  _textLogin(),
-                  SizedBox(height: 10), // Espacio entre título y campos
-                  _TextFieldEmail(),
-                  SizedBox(height: 20),
-                  _TextFieldPassword(),
-                  SizedBox(height: 30), // Espacio mayor antes de los botones
-                  _buttonLogin(context),
-                  //SizedBox(height: 10),
-                  //_buttonRegister(context),
-                ],
+              SizedBox(height: 12), // Espaciado entre el ícono y el título
+              Text(
+                'Iniciar sesión',
+                style: TextStyle(
+                  fontSize: 30,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w300,
+                  fontFamily: 'Roboto', // Ajusta el tipo de letra
+                ),
               ),
-            ),
+              SizedBox(height: 15), // Espaciado entre el título y el formulario
+              _loginForm(context),
+              SizedBox(
+                  height: 10), // Espacio reducido entre el formulario y el logo
+              Padding(
+                padding: const EdgeInsets.only(
+                    bottom: 10.0), // Ajuste del espacio con el borde inferior
+                child: Image.asset(
+                  'assets/img/upeuu.png', // Logo en la parte inferior
+                  width: 140, // Tamaño del logo
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
 
-  Widget _imageBackground(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
-    return Image.asset(
-      'assets/img/logininicial.png',
-      width: size.width,
-      height: size.height,
-      fit: BoxFit.cover,
-      color: Colors.black54.withOpacity(0.7),
-      colorBlendMode: BlendMode.darken,
-    );
-  }
-
-  Widget _textLogin() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: Text(
-        '¡Hola de nuevo!',
-        style: TextStyle(
-          fontSize: 26,
-          fontWeight: FontWeight.bold,
-          color: Colors.black87,
+  Widget _loginForm(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+          horizontal: 25, vertical: 40), // Aumenta el padding vertical aquí
+      margin: EdgeInsets.symmetric(horizontal: 40),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(25),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            spreadRadius: 5,
+            blurRadius: 15,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Form(
+        key: state.formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _TextFieldEmail(),
+            SizedBox(height: 20),
+            _TextFieldPassword(),
+            SizedBox(height: 10),
+            _buttonLogin(context),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton(
+                onPressed: () {
+                  // Acción para "¿Olvidaste tu contraseña?"
+                },
+                child: Text(
+                  '¿Olvidaste tu contraseña?',
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
   Widget _TextFieldEmail() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10),
-      child: TextFormField(
-        decoration: InputDecoration(
-          labelText: 'Email',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: Colors.grey),
-          ),
-          filled: true,
-          fillColor: Colors.grey[200], // Color de fondo para el campo de texto
-          prefixIcon: Icon(Icons.email, color: Colors.grey[600]),
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: 'Email',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.grey),
         ),
-        onChanged: (text) {
-          bloc?.add(EmailChanged(email: BlocFormItem(value: text)));
-        },
-        validator: (value) {
-          return state.email.error;
-        },
+        filled: true,
+        fillColor: Colors.grey[200],
+        prefixIcon: Icon(Icons.email, color: Colors.grey[600]),
       ),
+      onChanged: (text) {
+        bloc?.add(EmailChanged(email: BlocFormItem(value: text)));
+      },
+      validator: (value) {
+        return state.email.error;
+      },
     );
   }
 
   Widget _TextFieldPassword() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10),
-      child: TextFormField(
-        decoration: InputDecoration(
-          labelText: 'Contraseña',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: Colors.grey),
-          ),
-          filled: true,
-          fillColor: Colors.grey[200], // Color de fondo para el campo de texto
-          prefixIcon: Icon(Icons.lock, color: Colors.grey[600]),
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: 'Password',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.grey),
         ),
-        obscureText: true,
-        onChanged: (text) {
-          bloc?.add(PasswordChanged(password: BlocFormItem(value: text)));
-        },
-        validator: (value) {
-          return state.password.error;
-        },
+        filled: true,
+        fillColor: Colors.grey[200],
+        prefixIcon: Icon(Icons.lock, color: Colors.grey[600]),
       ),
+      obscureText: true,
+      onChanged: (text) {
+        bloc?.add(PasswordChanged(password: BlocFormItem(value: text)));
+      },
+      validator: (value) {
+        return state.password.error;
+      },
     );
   }
 
   Widget _buttonLogin(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 10),
       child: ElevatedButton(
         onPressed: () {
-          if (state.formKey!.currentState!.validate()) {
-            bloc!.add(LoginSubmit());
+          /*if (state.formKey!.currentState!.validate())*/ {
+            //bloc!.add(LoginSubmit());
+            Navigator.popAndPushNamed(context, "empresa/actividad");
           }
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.yellow[700], // Color amarillo similar
+          backgroundColor: Colors.orange,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(20),
           ),
-          padding: EdgeInsets.symmetric(vertical: 15),
+          padding: EdgeInsets.symmetric(vertical: 10),
         ),
         child: Text(
-          'Ingresar',
-          style: TextStyle(color: Colors.white),
+          'Sign In',
+          style: TextStyle(color: Colors.white, fontSize: 20),
         ),
       ),
     );
   }
 }
-  /*Widget _buttonRegister(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 10),
-      child: ElevatedButton(
-        onPressed: () {
-          Navigator.pushNamed(context, 'register');
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blue[700], // Color azul similar
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          padding: EdgeInsets.symmetric(vertical: 15),
-        ),
-        child: Text(
-          'Registrarse',
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
-    );
-  }
-}*/

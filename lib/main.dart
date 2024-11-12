@@ -10,6 +10,10 @@ import 'package:sppp/src/presentation/pages/auth/client/home/login/LoginInitial.
 import 'package:sppp/src/presentation/pages/auth/client/home/login/LoginPage.dart';
 import 'package:sppp/src/presentation/pages/auth/client/home/register/RegisterPage.dart';
 import 'package:sppp/src/presentation/pages/auth/home/ClienteHomePage.dart';
+import 'package:sppp/src/presentation/pages/auth/menu/actividad/ActividadContent.dart';
+import 'package:sppp/src/presentation/pages/auth/menu/actividad/formulario/FormularioActividadContent.dart';
+import 'package:sppp/src/presentation/pages/auth/menu/actividad/gestionar/GestionarActividadContent.dart';
+import 'package:sppp/src/presentation/pages/auth/menu/empresa/EmpresaContent.dart';
 import 'package:sppp/src/presentation/pages/blocProviders.dart';
 
 void main() async {
@@ -44,7 +48,13 @@ class MyApp extends StatelessWidget {
               'usuarios': (BuildContext context) => AdminUserList(),
               'admin/practicas': (BuildContext context) =>
                   RegisterPracticePage(),
-              'admin/viewpracticas': (BuildContext context) => PracticePage()
+              'admin/viewpracticas': (BuildContext context) => PracticePage(),
+              'empresa': (BuildContext context) => EmpresaSelectionScreen(),
+              'empresa/actividad': (BuildContext context) => ActividadContent(),
+              'empresa/actividad/gestionar': (BuildContext context) =>
+                  GestionarActividadContent(),
+              'empresa/actividad/agregar': (BuildContext context) =>
+                  FormularioActividadContent()
             }));
   }
 }
