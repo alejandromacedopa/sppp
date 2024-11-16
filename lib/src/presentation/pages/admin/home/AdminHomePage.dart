@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sppp/main.dart';
-
+import 'package:sppp/src/presentation/pages/admin/enterprise/list/AdminEnterpriseListPage.dart';
 import 'package:sppp/src/presentation/pages/admin/home/bloc/AdminHomeBloc.dart';
 import 'package:sppp/src/presentation/pages/admin/home/bloc/AdminHomeEvent.dart';
 import 'package:sppp/src/presentation/pages/admin/home/bloc/AdminHomeState.dart';
-import 'package:sppp/src/presentation/pages/admin/roles/list/RolesListPage.dart';
-import 'package:sppp/src/presentation/pages/auth/home/ClienteHomePage.dart';
 
 class AdminHomePage extends StatefulWidget {
   const AdminHomePage({super.key});
@@ -18,13 +16,13 @@ class AdminHomePage extends StatefulWidget {
 class _AdminHomePageState extends State<AdminHomePage> {
   AdminHomeBloc? _bloc;
 
-  List<Widget> pageList = <Widget>[RolesListPage()];
+  List<Widget> pageList = <Widget>[AdminEnterpriseListPage()];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Administrar Roles'),
+        title: const Text('Administrar Empresas'),
         titleTextStyle: TextStyle(
             color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
         backgroundColor: Colors.blue[900],
@@ -94,7 +92,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                       );
                     },
                   ),
-                  _buildDrawerItem(
+                  /*_buildDrawerItem(
                     icon: Icons.logout,
                     text: 'Inicio',
                     onTap: () {
@@ -106,7 +104,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                         (route) => false,
                       );
                     },
-                  ),
+                  ),*/
                 ],
               ),
             ),

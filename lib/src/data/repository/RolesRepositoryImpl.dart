@@ -11,7 +11,7 @@ class RolesRepositoryImpl implements RolesRepository {
     return rolesService.create(roles);
   }
 
-  @override
+   @override
   Future<Resource<List<Roles>>> getRoles() {
     return rolesService.getRoles();
   }

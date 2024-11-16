@@ -1,8 +1,8 @@
+
 import 'package:sppp/src/domain/models/Roles.dart';
 
 class User {
-  //variblaes
-  int? id;
+  String? id;
   String name;
   String lastname;
   String? email;
@@ -12,7 +12,6 @@ class User {
   String? notificationToken;
   List<Roles>? roles;
 
-  //constructor
   User({
     this.id,
     required this.name,
@@ -30,30 +29,30 @@ class User {
   }
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["id"] ?? 0,
-        name: json["name"],
-        lastname: json["lastname"],
-        email: json["email"],
-        phone: json["phone"],
-        password: json["password"] ?? '',
-        image: json["image"],
-        notificationToken: json["notification_token"] ?? '',
-        roles: json["roles"] != null
-            ? List<Roles>.from(json["roles"].map((x) => Roles.fromJson(x)))
-            : [],
-      );
+    id: json["id"] ?? '',
+    name: json["name"],
+    lastname: json["lastname"],
+    email: json["email"],
+    phone: json["phone"],
+    password: json["password"] ?? '',
+    image: json["image"],
+    notificationToken: json["notification_token"] ?? '',
+    roles: json["roles"] != null
+        ? List<Roles>.from(json["roles"].map((x) => Roles.fromJson(x)))
+        : [],
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "lastname": lastname,
-        "email": email,
-        "phone": phone,
-        "password": password,
-        "image": image,
-        "notification_token": notificationToken,
-        "roles": roles != null
-            ? List<dynamic>.from(roles!.map((x) => x.toJson()))
-            : [],
-      };
+    "id": id,
+    "name": name,
+    "lastname": lastname,
+    "email": email,
+    "phone": phone,
+    "password": password,
+    "image": image,
+    "notification_token": notificationToken,
+    "roles": roles != null
+        ? List<dynamic>.from(roles!.map((x) => x.toJson()))
+        : [],
+  };
 }

@@ -4,5 +4,5 @@ class GetRolesUseCase {
   RolesRepository rolesRepository;
   GetRolesUseCase(this.rolesRepository);
 
-  run() => rolesRepository.getRoles();
+ run() => rolesRepository.getRoles();
 }
