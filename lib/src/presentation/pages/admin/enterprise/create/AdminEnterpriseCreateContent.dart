@@ -173,10 +173,10 @@ class AdminEnterpriseCreateContent extends StatelessWidget {
       onTap: () {
         SelectOptionImageDialog(
           context,
-          () {
+              () {
             bloc?.add(PickImage());
           },
-          () {
+              () {
             bloc?.add(TakePhoto());
           },
         );
@@ -192,13 +192,13 @@ class AdminEnterpriseCreateContent extends StatelessWidget {
         child: ClipOval(
           child: state.file != null
               ? Image.file(
-                  state.file!,
-                  fit: BoxFit.cover,
-                )
+            state.file!,
+            fit: BoxFit.cover,
+          )
               : Image.asset(
-                  'assets/img/no-image.png',
-                  fit: BoxFit.cover,
-                ),
+            'assets/img/no-image.png',
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );

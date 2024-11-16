@@ -27,25 +27,24 @@ class AdminEnterpriseCreateBloc extends Bloc<AdminEnterpriseCreateEvent, AdminEn
     emit(state.copyWith(formKey: formKey));
   }
 
-  Future<void> _onNameChanged(NameChanged event, Emitter<AdminEnterpriseCreateState> emit) async {
-    final newValue = event.name.value ?? ''; // Usa una cadena vacía si el valor es nulo
+  Future<void> _onNameChanged(
+      NameChanged event, Emitter<AdminEnterpriseCreateState> emit) async {
     emit(state.copyWith(
-      name: BlocFormItem(
-        value: newValue,
-        error: newValue.isNotEmpty ? null : 'Ingresa el nombre de la empresa',
-      ),
-      formKey: formKey,
-    ));
+        name: BlocFormItem(
+            value: event.name.value,
+            error: event.name.value.isNotEmpty ? null : 'Ingresa el nombre'),
+        formKey: formKey));
   }
 
-  Future<void> _onSupervisorChanged(SupervisorChanged event, Emitter<AdminEnterpriseCreateState> emit) async {
+  Future<void> _onSupervisorChanged(
+      SupervisorChanged event, Emitter<AdminEnterpriseCreateState> emit) async {
     emit(state.copyWith(
-      supervisor: BlocFormItem(
-        value: event.supervisor.value,
-        error: event.supervisor.value.isNotEmpty ? null : 'Ingresa supervisor',
-      ),
-      formKey: formKey,
-    ));
+        supervisor: BlocFormItem(
+            value: event.supervisor.value,
+            error: event.supervisor.value.isNotEmpty
+                ? null
+                : 'Ingresa la descripcion'),
+        formKey: formKey));
   }
 
   Future<void> _onPickImage(PickImage event, Emitter<AdminEnterpriseCreateState> emit) async {

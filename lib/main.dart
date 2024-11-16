@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sppp/Injection.dart';
 import 'package:sppp/src/presentation/pages/admin/enterprise/create/AdminEnterpriseCreatePage.dart';
 import 'package:sppp/src/presentation/pages/admin/enterprise/list/AdminEnterpriseListPage.dart';
+import 'package:sppp/src/presentation/pages/admin/enterprise/update/AdminEnterpriseUpdatePage.dart';
 import 'package:sppp/src/presentation/pages/admin/home/AdminHomePage.dart';
 import 'package:sppp/src/presentation/pages/admin/practice/PracticePage.dart';
 import 'package:sppp/src/presentation/pages/admin/registerpractice/RegisterPracticePage.dart';
@@ -42,8 +43,8 @@ class MyApp extends StatelessWidget {
             initialRoute: 'login',
             routes: {
               //AUTH
-              'login': (BuildContext context) => LoginInitial(),
-              'login/screen': (BuildContext context) => LoginPage(),
+              //'login': (BuildContext context) => LoginInitial(),
+              'login': (BuildContext context) => LoginPage(),
               'roles': (BuildContext context) => RolesPage(),
               //STUDENT
               'student/home': (BuildContext context) => StudentHomePage(),
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
               'admin/home': (BuildContext context) => AdminHomePage(),
               'admin/enterprise/list': (BuildContext context) => AdminEnterpriseListPage(),
               'admin/enterprise/create': (BuildContext context) => AdminEnterpriseCreatePage(),
+              'admin/enterprise/update': (BuildContext context) => AdminEnterpriseUpdatePage(),
 
               'admin/practicas': (BuildContext context) =>
                   RegisterPracticePage(),

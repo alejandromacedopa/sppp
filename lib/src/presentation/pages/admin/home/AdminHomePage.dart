@@ -20,126 +20,95 @@ class _AdminHomePageState extends State<AdminHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    _bloc = BlocProvider.of<AdminHomeBloc>(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Administrar Empresas'),
-        titleTextStyle: TextStyle(
-            color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
-        backgroundColor: Colors.blue[900],
-        iconTheme: IconThemeData(
-          color: Colors
-              .white, // Change the color of the three-bar icon (hamburger icon)
-        ), // Tono azul marino
-        elevation: 4, // Sombra para darle un efecto elevado
+        title: Text(
+          'Administrar Empresas',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        backgroundColor: Colors.black12,
+        actions: [
+
+        ],
       ),
       drawer: BlocBuilder<AdminHomeBloc, AdminHomeState>(
         builder: (context, state) {
           return Drawer(
-            child: Container(
-              color: Colors.blue[800], // Fondo del Drawer
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  DrawerHeader(
-                    decoration: BoxDecoration(
-                      color: Colors.blue[900], // Tono azul marino
+            child: Column(
+              children: [
+                DrawerHeader(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Colors.green, Colors.lightGreen],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CircleAvatar(
-                          backgroundImage: AssetImage('assets/img/woman.jpg'),
-                          radius: 40,
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          'Menú Admin',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                    image: DecorationImage(
+                      image: AssetImage('assets/img/woman.jpg'),
+                      fit: BoxFit.cover,
+                      colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.5),
+                        BlendMode.darken,
+                      ),
                     ),
                   ),
-                  _buildDrawerItem(
-                    icon: Icons.supervised_user_circle,
-                    text: 'Roles',
-                    selected: state.pageIndex == 0,
-                    onTap: () {
-                      _bloc?.add(AdminChangeDrawerPage(pageIndex: 0));
-                      Navigator.pop(context);
-                    },
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Text(
+                      'Menú de opciones',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                  _buildDrawerItem(
-                    icon: Icons.list,
-                    text: 'Usuarios',
-                    selected: state.pageIndex == 1,
-                    onTap: () {
-                      _bloc?.add(AdminChangeDrawerPage(pageIndex: 1));
-                      Navigator.pushNamed(context, 'usuarios');
-                    },
+                ),
+                ListTile(
+                  leading: Icon(Icons.home, color: Colors.green),
+                  title: Text(
+                    'Empresas',
+                    style: TextStyle(fontSize: 16),
                   ),
-                  _buildDrawerItem(
-                    icon: Icons.logout,
-                    text: 'Cerrar Sesión',
-                    onTap: () {
-                      _bloc?.add(AdminLogout());
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => MyApp()),
-                        (route) => false,
-                      );
-                    },
+                  selected: state.pageIndex == 0,
+                  onTap: () {
+                    _bloc?.add(AdminChangeDrawerPage(pageIndex: 0));
+                  },
+                ),
+                Divider(),
+                ListTile(
+                  leading: Icon(Icons.logout, color: Colors.green),
+                  title: Text(
+                    'Cerrar Sesión',
+                    style: TextStyle(fontSize: 16),
                   ),
-                  /*_buildDrawerItem(
-                    icon: Icons.logout,
-                    text: 'Inicio',
-                    onTap: () {
-                      _bloc?.add(AdminLogout());
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ClientHomePage()),
-                        (route) => false,
-                      );
-                    },
-                  ),*/
-                ],
-              ),
+                  onTap: () {
+                    _bloc?.add(AdminLogout());
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyApp()),
+                          (route) => false,
+                    );
+                  },
+                ),
+              ],
             ),
           );
         },
       ),
       body: BlocBuilder<AdminHomeBloc, AdminHomeState>(
         builder: (context, state) {
-          return pageList[state.pageIndex];
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: pageList[state.pageIndex],
+          );
         },
       ),
-    );
-  }
-
-  Widget _buildDrawerItem({
-    required IconData icon,
-    required String text,
-    required VoidCallback onTap,
-    bool selected = false,
-  }) {
-    return ListTile(
-      leading: Icon(icon, color: Colors.white),
-      title: Text(
-        text,
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
-      ),
-      onTap: onTap,
-      tileColor: selected
-          ? Colors.blue[700]
-          : Colors
-              .transparent, // Color más claro para el item si está seleccionado
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     );
   }
 }

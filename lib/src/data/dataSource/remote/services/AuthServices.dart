@@ -12,7 +12,7 @@ class AuthServices {
     try {
       //print('email:$email');
       //print('password:$password');
-      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/auth/login');
+      Uri url = Uri.http(ApiConfig.API_ECOMMERCE, '/auth/login');
       Map<String, String> headers = {"Content-Type": "application/json"};
       String body = json.encode({
         'email': email,
@@ -36,7 +36,7 @@ class AuthServices {
 
   Future<Resource<AuthResponse>> register(User user) async {
     try {
-      Uri url = Uri.http(ApiConfig.API_ECOMMERCE, '/auth/register');
+      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/auth/register');
       Map<String, String> headers = {"Content-Type": "application/json"};
       String body = json.encode(user);
 

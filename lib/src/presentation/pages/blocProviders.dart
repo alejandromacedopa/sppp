@@ -6,6 +6,7 @@ import 'package:sppp/src/domain/useCases/roles/RolesUseCases.dart';
 import 'package:sppp/src/presentation/pages/admin/enterprise/create/bloc/AdminEnterpriseCreateBloc.dart';
 import 'package:sppp/src/presentation/pages/admin/enterprise/create/bloc/AdminEnterpriseCreateEvent.dart';
 import 'package:sppp/src/presentation/pages/admin/enterprise/list/bloc/AdminEnterpriseListBloc.dart';
+import 'package:sppp/src/presentation/pages/admin/enterprise/update/bloc/AdminEnterpriseUpdateBloc.dart';
 import 'package:sppp/src/presentation/pages/admin/home/bloc/AdminHomeBloc.dart';
 import 'package:sppp/src/presentation/pages/admin/roles/list/bloc/AdminRolesListBloc.dart';
 import 'package:sppp/src/presentation/pages/auth/login/bloc/LoginBloc.dart';
@@ -33,7 +34,9 @@ List<BlocProvider> blocProviders = [
   BlocProvider<AdminEnterpriseCreateBloc>(
       create: (context) => AdminEnterpriseCreateBloc(locator<EnterpriseUseCases>())
         ..add(AdminEnterpriseCreateInitEvent())),
-
+  BlocProvider<AdminEnterpriseUpdateBloc>(
+      create: (context) =>
+          AdminEnterpriseUpdateBloc(locator<EnterpriseUseCases>())),
 
 
 
