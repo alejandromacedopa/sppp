@@ -1,22 +1,22 @@
+
 import 'package:equatable/equatable.dart';
 
-class AdminHomeEvent extends Equatable {
+abstract class AdminHomeEvent extends Equatable {
   const AdminHomeEvent();
 
   @override
   List<Object?> get props => [];
+
 }
 
-class AdminChangeDrawerPage extends AdminHomeEvent {
+class AdminChangeDrawerPage extends AdminHomeEvent{
   final int pageIndex;
-  const AdminChangeDrawerPage({required this.pageIndex});
-
+  const AdminChangeDrawerPage({ required this.pageIndex});
   @override
   List<Object?> get props => [pageIndex];
 }
 
-class AdminRefreshRoles extends AdminHomeEvent {}
+class AdminLogout extends AdminHomeEvent{
+  const  AdminLogout();
 
-class AdminLogout extends AdminHomeEvent {
-  const AdminLogout();
 }

@@ -25,7 +25,8 @@ List<BlocProvider> blocProviders = [
       create: (context) =>
       RolesBloc(locator<AuthUseCases>())..add(GetRolesList())),
   //ADMIN PROVIDERS
-  BlocProvider<AdminHomeBloc>(create: (context) => AdminHomeBloc()),
+  BlocProvider<AdminHomeBloc>(
+      create: (context) => AdminHomeBloc(locator<AuthUseCases>())),
   BlocProvider<AdminRolesListBloc>(
       create: (context) => AdminRolesListBloc(locator<RolesUseCases>())),
 
