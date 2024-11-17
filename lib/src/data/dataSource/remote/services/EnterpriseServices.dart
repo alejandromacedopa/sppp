@@ -15,7 +15,7 @@ class EnterpriseService {
 
   Future<Resource<Enterprise>> create(Enterprise enterprise, File file) async {
     try {
-      Uri url = Uri.http(ApiConfig.API_ECOMMERCE, '/enterprise');
+      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/enterprise');
       final request = http.MultipartRequest('POST', url);
       request.headers['Authorization'] = await token;
       request.files.add(http.MultipartFile(
@@ -41,7 +41,7 @@ class EnterpriseService {
 
   Future<Resource<Enterprise>> update(int id, Enterprise enterprise) async {
     try {
-      Uri url = Uri.http(ApiConfig.API_ECOMMERCE, '/enterprise/$id');
+      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/enterprise/$id');
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "Authorization": await token
@@ -68,7 +68,7 @@ class EnterpriseService {
   Future<Resource<Enterprise>> updateImage(
       int id, Enterprise enterprise, File file) async {
     try {
-      Uri url = Uri.http(ApiConfig.API_ECOMMERCE, '/enterprise/upload/$id');
+      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/enterprise/upload/$id');
       final request = http.MultipartRequest('PUT', url);
       request.headers['Authorization'] = await token;
       request.files.add(http.MultipartFile(
@@ -95,7 +95,7 @@ class EnterpriseService {
 
   Future<Resource<List<Enterprise>>> getEnterprise() async {
     try {
-      Uri url = Uri.http(ApiConfig.API_ECOMMERCE, '/enterprise');
+      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/enterprise');
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "Authorization": await token
@@ -117,7 +117,7 @@ class EnterpriseService {
 
   Future<Resource<bool>> delete(int id) async {
     try {
-      Uri url = Uri.http(ApiConfig.API_ECOMMERCE, '/enterprise/$id');
+      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/enterprise/$id');
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "Authorization": await token

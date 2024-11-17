@@ -9,7 +9,7 @@ import 'package:sppp/src/domain/models/Roles.dart';
 class RolesService {
   Future<Resource<Roles>> create(Roles roles) async {
     try {
-      Uri url = Uri.http(ApiConfig.API_ECOMMERCE, '/roles');
+      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/roles');
       Map<String, String> headers = {"Content-Type": "application/json"};
       String body = json.encode(roles.toJson());
 
@@ -31,7 +31,7 @@ class RolesService {
   Future<Resource<List<Roles>>> getRoles() async {
     try {
       // hhtp://192.168.1.89:3000/roles
-      Uri url = Uri.http(ApiConfig.API_ECOMMERCE, '/roles');
+      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/roles');
       Map<String, String> headers = {"Content-Type": "application/json"};
       final response = await http.get(url, headers: headers);
       final data = json.decode(response.body);
