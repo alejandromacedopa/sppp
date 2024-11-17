@@ -10,36 +10,35 @@ import 'package:sppp/src/presentation/widget/DefaultIconBack.dart';
 import 'package:sppp/src/presentation/widget/DefaultTextField.dart';
 
 class AdminEnterpriseUpdateContent extends StatelessWidget {
-
-  AdminEnterpriseUpdateBloc? bloc;
-  AdminEnterpriseUpdateState state;
-  Enterprise? enterprise;
+  final AdminEnterpriseUpdateBloc bloc;
+  final AdminEnterpriseUpdateState state;
+  final Enterprise enterprise;
 
   AdminEnterpriseUpdateContent(this.bloc, this.state, this.enterprise);
 
   @override
   Widget build(BuildContext context) {
     return Form(
-        key: state.formKey,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            _imageBackground(context),
-            SingleChildScrollView(
-              child: Container(
-                height: MediaQuery.of(context).size.height,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _imageCategory(context),
-                    _cardEnterpriseForm(context)
-                  ],
-                ),
+      key: state.formKey,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          _imageBackground(context),
+          SingleChildScrollView(
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _imageCategory(context),
+                  _cardEnterpriseForm(context),
+                ],
               ),
             ),
-            DefaultIconBack(left: 15, top: 50)
-          ],
-        )
+          ),
+           DefaultIconBack(left: 15, top: 50),
+        ],
+      ),
     );
   }
 
@@ -47,21 +46,21 @@ class AdminEnterpriseUpdateContent extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: MediaQuery.of(context).size.height * 0.42,
-      decoration: BoxDecoration(
-          color: Color.fromRGBO(255, 255, 255, 0.7),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(35),
-            topRight: Radius.circular(35),
-          )
+      decoration: const BoxDecoration(
+        color: Color.fromRGBO(255, 255, 255, 0.7),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(35),
+          topRight: Radius.circular(35),
+        ),
       ),
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 35),
+        margin: const EdgeInsets.symmetric(horizontal: 35),
         child: Column(
           children: [
             _textNewCategory(),
             _textFieldName(),
             _textFieldDescription(),
-            _fabSubmit()
+            _fabSubmit(),
           ],
         ),
       ),
@@ -71,18 +70,15 @@ class AdminEnterpriseUpdateContent extends StatelessWidget {
   Widget _fabSubmit() {
     return Container(
       alignment: Alignment.centerRight,
-      margin: EdgeInsets.only(top: 30),
+      margin: const EdgeInsets.only(top: 30),
       child: FloatingActionButton(
         onPressed: () {
-          if (state.formKey!.currentState!.validate()) {
-            bloc?.add(FormSubmit());
+          if (state.formKey?.currentState?.validate() ?? false) {
+            bloc.add(FormSubmit());
           }
         },
         backgroundColor: Colors.black,
-        child: Icon(
-          Icons.check,
-          color: Colors.white,
-        ),
+        child: const Icon(Icons.check, color: Colors.white),
       ),
     );
   }
@@ -90,42 +86,36 @@ class AdminEnterpriseUpdateContent extends StatelessWidget {
   Widget _textNewCategory() {
     return Container(
       alignment: Alignment.centerLeft,
-      margin: EdgeInsets.only(top: 35, left: 10, bottom: 10),
-      child: Text(
+      margin: const EdgeInsets.only(top: 35, left: 10, bottom: 10),
+      child: const Text(
         'ACTUALIZAR EMPRESA',
-        style: TextStyle(
-            fontSize: 17
-        ),
+        style: TextStyle(fontSize: 17),
       ),
     );
   }
 
   Widget _textFieldName() {
     return DefaultTextField(
-      label: 'Nombre de la categoria',
+      label: 'Nombre de la empresa',
       icon: Icons.category,
-      initialValue: enterprise?.name ?? '',
+      initialValue: enterprise.name ?? '',
       onChange: (text) {
-        bloc?.add(NameChanged(name: BlocFormItem(value: text)));
+        bloc.add(NameChanged(name: BlocFormItem(value: text)));
       },
-      validator: (value) {
-        return state.name.error;
-      },
+      validator: (_) => state.name.error,
       color: Colors.black,
     );
   }
 
   Widget _textFieldDescription() {
     return DefaultTextField(
-      label: 'Descripcion',
+      label: 'Supervisor',
       icon: Icons.list,
-      initialValue: enterprise?.supervisor ?? '',
+      initialValue: enterprise.supervisor ?? '',
       onChange: (text) {
-        bloc?.add(SupervisorChanged(supervisor: BlocFormItem(value: text)));
+        bloc.add(SupervisorChanged(supervisor: BlocFormItem(value: text)));
       },
-      validator: (value) {
-        return state.supervisor.error;
-      },
+      validator: (_) => state.supervisor.error,
       color: Colors.black,
     );
   }
@@ -135,32 +125,25 @@ class AdminEnterpriseUpdateContent extends StatelessWidget {
       onTap: () {
         SelectOptionImageDialog(
           context,
-              () { bloc?.add(PickImage()); },
-              () { bloc?.add(TakePhoto()); },
+              () => bloc.add(PickImage()),
+              () => bloc.add(TakePhoto()),
         );
       },
       child: Container(
         width: 150,
-        margin: EdgeInsets.only(top: 100),
+        margin: const EdgeInsets.only(top: 100),
         child: AspectRatio(
-          aspectRatio: 1/1,
+          aspectRatio: 1 / 1,
           child: ClipOval(
-              child: state.file != null
-                  ? Image.file(
-                state.file!,
-                fit: BoxFit.cover,
-              )
-                  : enterprise != null
-                  ? FadeInImage.assetNetwork(
-                placeholder: 'assets/img/user_image.png',
-                image: enterprise!.logoImageUrl!,
-                fit: BoxFit.cover,
-                fadeInDuration: Duration(seconds: 1),
-              )
-                  :Image.asset(
-                'assets/img/no-image.png',
-                fit: BoxFit.cover,
-              )
+            child: state.file != null
+                ? Image.file(state.file!, fit: BoxFit.cover)
+                : (enterprise.logoImageUrl != null)
+                ? FadeInImage.assetNetwork(
+              placeholder: 'assets/img/user_image.png',
+              image: enterprise.logoImageUrl!,
+              fit: BoxFit.cover,
+            )
+                : Image.asset('assets/img/no-image.png', fit: BoxFit.cover),
           ),
         ),
       ),
@@ -173,7 +156,7 @@ class AdminEnterpriseUpdateContent extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       fit: BoxFit.cover,
-      color: Color.fromRGBO(0, 0, 0, 0.7),
+      color: const Color.fromRGBO(0, 0, 0, 0.7),
       colorBlendMode: BlendMode.darken,
     );
   }

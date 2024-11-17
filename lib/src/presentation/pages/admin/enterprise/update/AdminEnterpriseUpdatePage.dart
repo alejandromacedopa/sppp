@@ -20,28 +20,30 @@ class AdminEnterpriseUpdatePage extends StatefulWidget {
 }
 
 class _AdminEnterpriseUpdatePage extends State<AdminEnterpriseUpdatePage> {
-
   Enterprise? enterprise;
-  AdminEnterpriseUpdateBloc? _bloc;
+  late AdminEnterpriseUpdateBloc _bloc;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _bloc?.add(AdminEnterpriseUpdateInitEvent(enterprise: enterprise));
+      if (enterprise != null) {
+        _bloc.add(AdminEnterpriseUpdateInitEvent(enterprise: enterprise!));
+      }
     });
   }
 
   @override
   void dispose() {
+    _bloc.add(ResetForm());
     super.dispose();
-    _bloc?.add(ResetForm());
   }
 
   @override
   Widget build(BuildContext context) {
     _bloc = BlocProvider.of<AdminEnterpriseUpdateBloc>(context);
-    enterprise = ModalRoute.of(context)?.settings.arguments as Enterprise;
+    enterprise = ModalRoute.of(context)?.settings.arguments as Enterprise?;
+
     return Scaffold(
       body: BlocListener<AdminEnterpriseUpdateBloc, AdminEnterpriseUpdateState>(
         listener: (context, state) {
@@ -49,15 +51,20 @@ class _AdminEnterpriseUpdatePage extends State<AdminEnterpriseUpdatePage> {
           if (responseState is Success) {
             context.read<AdminEnterpriseListBloc>().add(GetEnterprise());
             Navigator.pop(context);
-            Fluttertoast.showToast(msg: 'La Empresa se actualizo correctamente', toastLength: Toast.LENGTH_LONG);
-          }
-          else if (responseState is Error) {
-            Fluttertoast.showToast(msg: responseState.message, toastLength: Toast.LENGTH_LONG);
+            Fluttertoast.showToast(
+                msg: 'La Empresa se actualizó correctamente',
+                toastLength: Toast.LENGTH_LONG);
+          } else if (responseState is Error) {
+            Fluttertoast.showToast(
+                msg: responseState.message, toastLength: Toast.LENGTH_LONG);
           }
         },
-        child:  BlocBuilder<AdminEnterpriseUpdateBloc, AdminEnterpriseUpdateState>(
+        child: BlocBuilder<AdminEnterpriseUpdateBloc, AdminEnterpriseUpdateState>(
           builder: (context, state) {
-            return AdminEnterpriseUpdateContent(_bloc, state, enterprise);
+            if (enterprise == null) {
+              return const Center(child: Text('No se proporcionaron datos de la empresa'));
+            }
+            return AdminEnterpriseUpdateContent(_bloc, state, enterprise!);
           },
         ),
       ),
