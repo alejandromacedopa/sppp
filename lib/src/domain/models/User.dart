@@ -2,7 +2,7 @@
 import 'package:sppp/src/domain/models/Roles.dart';
 
 class User {
-  String id;
+  String? id;
   String name;
   String lastname;
   String? email;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sppp/main.dart';
+import 'package:sppp/src/presentation/pages/admin/category/list/AdminCategoryListPage.dart';
 import 'package:sppp/src/presentation/pages/admin/enterprise/list/AdminEnterpriseListPage.dart';
 import 'package:sppp/src/presentation/pages/admin/home/bloc/AdminHomeBloc.dart';
 import 'package:sppp/src/presentation/pages/admin/home/bloc/AdminHomeEvent.dart';
@@ -15,13 +16,14 @@ class AdminHomePage extends StatefulWidget {
   State<AdminHomePage> createState() => _AdminHomePageState();
 }
 
-class _AdminHomePageState extends State<AdminHomePage> {
+class _AdminHomePageState extends State<AdminHomePage> with SingleTickerProviderStateMixin {
   late AdminHomeBloc _bloc;
 
   final List<Widget> pageList = <Widget>[
     AdminEnterpriseListPage(),
     RolesListPage(),
-    AdminUsersListPage()
+    AdminUsersListPage(),
+    AdminCategoryListPage(),
   ];
 
   @override
@@ -33,40 +35,65 @@ class _AdminHomePageState extends State<AdminHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.blueGrey.shade900.withOpacity(0.8), Colors.blueGrey.shade500.withOpacity(0.8)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 8,
+                spreadRadius: 2,
+              ),
+            ],
+          ),
+        ),
         title: const Text(
           'Panel Administrativo',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 22,
-            color: Colors.white
+            color: Colors.white,
+            shadows: [
+              Shadow(
+                blurRadius: 4,
+                color: Colors.black26,
+                offset: Offset(1, 2),
+              ),
+            ],
           ),
         ),
-        backgroundColor: Colors.blueGrey[900],
-        elevation: 10,
-        shadowColor: Colors.black54,
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.account_circle, size: 30),
+            icon: const Icon(Icons.account_circle, size: 28, color: Colors.white),
             onPressed: () {
-              // Aquí puedes agregar la acción para abrir la página de perfil
+              // Acción para el perfil
             },
+            splashRadius: 24,
+            tooltip: "Perfil",
           ),
         ],
       ),
       body: BlocBuilder<AdminHomeBloc, AdminHomeState>(
         builder: (context, state) {
           return AnimatedSwitcher(
-            duration: const Duration(milliseconds: 400),
-            switchInCurve: Curves.easeIn,
-            switchOutCurve: Curves.easeOut,
+            duration: const Duration(milliseconds: 500),
+            switchInCurve: Curves.easeInOut,
+            switchOutCurve: Curves.easeInOut,
             child: state.isLoading
                 ? const Center(
               key: ValueKey('loading'),
               child: CircularProgressIndicator(
-                strokeWidth: 4,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                strokeWidth: 3,
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
               ),
             )
                 : pageList[state.pageIndex],
@@ -76,24 +103,24 @@ class _AdminHomePageState extends State<AdminHomePage> {
       bottomNavigationBar: BlocBuilder<AdminHomeBloc, AdminHomeState>(
         builder: (context, state) {
           return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
+              borderRadius: BorderRadius.circular(30),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.1),
                   spreadRadius: 2,
                   blurRadius: 10,
+                  offset: Offset(0, 5),
                 ),
               ],
             ),
             child: BottomNavigationBar(
               currentIndex: state.pageIndex,
               onTap: (index) {
-                if (index == 3) {
+                if (index == 4) {
                   _bloc.add(AdminLogout());
                   Navigator.pushAndRemoveUntil(
                     context,
@@ -104,27 +131,14 @@ class _AdminHomePageState extends State<AdminHomePage> {
                   _bloc.add(AdminChangeDrawerPage(pageIndex: index));
                 }
               },
-              items: const [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.business, size: 28),
-                  label: 'Empresas',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.person_4, size: 28),
-                  label: 'Roles',
-                ),
-
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.people, size: 28),
-                  label: 'Usuarios',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.logout, size: 28),
-                  label: 'Cerrar Sesión',
-                ),
-
+              items: [
+                _buildNavItem(Icons.business, 'Empresas', state.pageIndex == 0),
+                _buildNavItem(Icons.person_4, 'Roles', state.pageIndex == 1),
+                _buildNavItem(Icons.people, 'Usuarios', state.pageIndex == 2),
+                _buildNavItem(Icons.category, 'Cursos', state.pageIndex == 3),
+                _buildNavItem(Icons.logout, 'Cerrar Sesión', state.pageIndex == 4, color: Colors.redAccent),
               ],
-              selectedItemColor: Colors.green,
+              selectedItemColor: Colors.blue,
               unselectedItemColor: Colors.grey,
               backgroundColor: Colors.transparent,
               elevation: 0,
@@ -141,6 +155,31 @@ class _AdminHomePageState extends State<AdminHomePage> {
           );
         },
       ),
+    );
+  }
+
+  BottomNavigationBarItem _buildNavItem(IconData icon, String label, bool isSelected, {Color? color}) {
+    return BottomNavigationBarItem(
+      icon: AnimatedContainer(
+        duration: const Duration(milliseconds: 400),
+        padding: isSelected ? const EdgeInsets.all(6) : EdgeInsets.zero,
+        decoration: isSelected
+            ? BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blue.withOpacity(0.5), Colors.blue],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+          shape: BoxShape.circle,
+        )
+            : null,
+        child: Icon(
+          icon,
+          size: isSelected ? 32 : 28,
+          color: isSelected ? (color ?? Colors.black) : Colors.grey,
+        ),
+      ),
+      label: label,
     );
   }
 }

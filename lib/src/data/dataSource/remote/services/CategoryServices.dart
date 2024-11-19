@@ -1,36 +1,40 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:sppp/src/data/api/ApiConfig.dart';
-import 'package:sppp/src/domain/models/Enterprise.dart';
-import 'package:sppp/src/domain/utils/ListToString.dart';
-import 'package:sppp/src/domain/utils/Resource.dart';
-import 'package:http/http.dart' as https;
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart';
+import 'package:http/http.dart' as https;
+import 'package:sppp/src/data/api/ApiConfig.dart';
+import 'package:sppp/src/domain/models/Category.dart';
+import 'package:sppp/src/domain/utils/ListToString.dart';
+import 'package:sppp/src/domain/utils/Resource.dart';
 
-class EnterpriseService {
-  Future<String> token;
+class CategoriesService {
 
-  EnterpriseService(this.token);
+  Future <String> token;
 
-  Future<Resource<Enterprise>> create(Enterprise enterprise, File file) async {
+  CategoriesService(this.token);
+
+  Future <Resource<Category>> create(Category category, File file) async {
+
     try {
-      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/enterprise');
+      Uri url = Uri.https(ApiConfig.API_ECOMMERCE,'/category');
       final request = https.MultipartRequest('POST', url);
       request.headers['Authorization'] = await token;
       request.files.add(https.MultipartFile(
-          'file', https.ByteStream(file.openRead().cast()), await file.length(),
+          'file',
+          https.ByteStream(file.openRead().cast()),
+          await file.length(),
           filename: basename(file.path),
-          contentType: MediaType('logoImageUrl', 'jpg')));
-      request.fields['name'] = enterprise.name;
-      request.fields['supervisor'] = enterprise.supervisor;
+          contentType: MediaType('image','jpg')
+      ));
+      request.fields['name'] = category.name;
+      request.fields['description'] = category.description;
       final response = await request.send();
-      final data =
-          json.decode(await response.stream.transform(utf8.decoder).first);
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        Enterprise enterpriseResponse = Enterprise.fromJson(data);
-        return Success(enterpriseResponse);
-      } else {
+      final data = json.decode(await response.stream.transform(utf8.decoder).first);
+      if(response.statusCode == 200 || response.statusCode == 201){
+        Category categoryResponse = Category.fromJson(data);
+        return Success(categoryResponse);
+      }else{
         return Error(ListToString(data['message']));
       }
     } catch (e) {
@@ -39,24 +43,24 @@ class EnterpriseService {
     }
   }
 
-  Future<Resource<Enterprise>> update(int id, Enterprise enterprise) async {
+  Future<Resource<Category>> update(int id, Category category) async {
     try {
-      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/enterprise/$id');
+      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/category/$id');
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "Authorization": await token
       };
       String body = json.encode({
-        'name': enterprise.name,
-        'supervisor': enterprise.supervisor,
+        'name': category.name,
+        'description': category.description,
       });
       final response = await https.put(url, headers: headers, body: body);
       final data = json.decode(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
-        Enterprise enterpriseResponse = Enterprise.fromJson(data);
-        return Success(enterpriseResponse);
-      } else {
-        // ERROR
+        Category categoryResponse = Category.fromJson(data);
+        return Success(categoryResponse);
+      }
+      else { // ERROR
         return Error(ListToString(data['message']));
       }
     } catch (e) {
@@ -64,27 +68,27 @@ class EnterpriseService {
       return Error(e.toString());
     }
   }
-
-  Future<Resource<Enterprise>> updateImage(
-      int id, Enterprise enterprise, File file) async {
+  Future<Resource<Category>> updateImage(int id, Category category, File file) async {
     try {
-      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/enterprise/upload/$id');
+      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/category/upload/$id');
       final request = https.MultipartRequest('PUT', url);
       request.headers['Authorization'] = await token;
       request.files.add(https.MultipartFile(
-          'file', https.ByteStream(file.openRead().cast()), await file.length(),
+          'file',
+          https.ByteStream(file.openRead().cast()),
+          await file.length(),
           filename: basename(file.path),
-          contentType: MediaType('logoImageUrl', 'jpg')));
-      request.fields['name'] = enterprise.name;
-      request.fields['supervisor'] = enterprise.supervisor;
+          contentType: MediaType('image', 'jpg')
+      ));
+      request.fields['name'] = category.name;
+      request.fields['description'] = category.description;
       final response = await request.send();
-      final data =
-          json.decode(await response.stream.transform(utf8.decoder).first);
+      final data = json.decode(await response.stream.transform(utf8.decoder).first);
       if (response.statusCode == 200 || response.statusCode == 201) {
-        Enterprise enterpriseResponse = Enterprise.fromJson(data);
-        return Success(enterpriseResponse);
-      } else {
-        // ERROR
+        Category categoryResponse = Category.fromJson(data);
+        return Success(categoryResponse);
+      }
+      else { // ERROR
         return Error(ListToString(data['message']));
       }
     } catch (e) {
@@ -92,10 +96,9 @@ class EnterpriseService {
       return Error(e.toString());
     }
   }
-
-  Future<Resource<List<Enterprise>>> getEnterprise() async {
+  Future<Resource<List<Category>>> getCategories() async {
     try {
-      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/enterprise');
+      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/category');
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "Authorization": await token
@@ -103,10 +106,10 @@ class EnterpriseService {
       final response = await https.get(url, headers: headers);
       final data = json.decode(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
-        List<Enterprise> enterprise = Enterprise.fromJsonList(data);
-        return Success(enterprise);
-      } else {
-        // ERROR
+        List<Category> categories = Category.fromJsonList(data);
+        return Success(categories);
+      }
+      else { // ERROR
         return Error(ListToString(data['message']));
       }
     } catch (e) {
@@ -117,7 +120,7 @@ class EnterpriseService {
 
   Future<Resource<bool>> delete(int id) async {
     try {
-      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/enterprise/$id');
+      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/category/$id');
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "Authorization": await token
@@ -126,8 +129,8 @@ class EnterpriseService {
       final data = json.decode(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
         return Success(true);
-      } else {
-        // ERROR
+      }
+      else { // ERROR
         return Error(ListToString(data['message']));
       }
     } catch (e) {
@@ -135,4 +138,6 @@ class EnterpriseService {
       return Error(e.toString());
     }
   }
+
+
 }

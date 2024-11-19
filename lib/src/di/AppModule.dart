@@ -1,15 +1,21 @@
 import 'package:injectable/injectable.dart';
 import 'package:sppp/src/data/dataSource/local/SharedPref.dart';
 import 'package:sppp/src/data/dataSource/remote/services/AuthServices.dart';
+import 'package:sppp/src/data/dataSource/remote/services/CategoryServices.dart';
+import 'package:sppp/src/data/dataSource/remote/services/CoursesSercices.dart';
 import 'package:sppp/src/data/dataSource/remote/services/EnterpriseServices.dart';
 import 'package:sppp/src/data/dataSource/remote/services/RolesServices.dart';
 import 'package:sppp/src/data/dataSource/remote/services/UsersServices.dart';
 import 'package:sppp/src/data/repository/AuthRepositoryImpl.dart';
+import 'package:sppp/src/data/repository/CategoryRepositoryImpl.dart';
+import 'package:sppp/src/data/repository/CoursesRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/EnterpriseRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/RolesRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/UsersRepositoryImpl.dart';
 import 'package:sppp/src/domain/models/AuthResponse.dart';
 import 'package:sppp/src/domain/repository/AuthRepository.dart';
+import 'package:sppp/src/domain/repository/CategoryRepository.dart';
+import 'package:sppp/src/domain/repository/CoursesRepository.dart';
 import 'package:sppp/src/domain/repository/EnterpriseRepository.dart';
 import 'package:sppp/src/domain/repository/RolesRepository.dart';
 import 'package:sppp/src/domain/repository/UsersRepository.dart';
@@ -19,6 +25,16 @@ import 'package:sppp/src/domain/useCases/auth/LoginUseCase.dart';
 import 'package:sppp/src/domain/useCases/auth/LogoutUseCase.dart';
 import 'package:sppp/src/domain/useCases/auth/RegisterUseCase.dart';
 import 'package:sppp/src/domain/useCases/auth/SaveUserSessionUseCase.dart';
+import 'package:sppp/src/domain/useCases/category/CategoryUseCases.dart';
+import 'package:sppp/src/domain/useCases/category/CreateCategoryUseCase.dart';
+import 'package:sppp/src/domain/useCases/category/DeleteCategoryUseCase.dart';
+import 'package:sppp/src/domain/useCases/category/GetCategoryUseCase.dart';
+import 'package:sppp/src/domain/useCases/category/UpdateCategoryUseCase.dart';
+import 'package:sppp/src/domain/useCases/courses/CoursesUseCases.dart';
+import 'package:sppp/src/domain/useCases/courses/CreateCoursesUseCase.dart';
+import 'package:sppp/src/domain/useCases/courses/DeleteCoursesUseCase.dart';
+import 'package:sppp/src/domain/useCases/courses/GetCoursesByCategoryUseCase.dart';
+import 'package:sppp/src/domain/useCases/courses/UpdateCoursesUseCase.dart';
 import 'package:sppp/src/domain/useCases/enterprise/CreateEnterpriseUseCase.dart';
 import 'package:sppp/src/domain/useCases/enterprise/DeleteEnterpriseUseCase.dart';
 import 'package:sppp/src/domain/useCases/enterprise/EnterpriseUseCases.dart';
@@ -56,6 +72,12 @@ abstract class AppModule {
   RolesService get rolesService => RolesService(token);
 
   @injectable
+  CategoriesService get categoriesService => CategoriesService(token);
+
+  @injectable
+  CoursesService get coursesService => CoursesService(token);
+
+  @injectable
   UsersServices get usersServices => UsersServices(token);
 
   @injectable
@@ -71,6 +93,12 @@ abstract class AppModule {
 
   @injectable
   UsersRepository get usersRepository => UsersRepositoryImpl(usersServices);
+
+  @injectable
+  CategoriesRepository get categoriesRepository => CategoriesRepositoryImpl(categoriesService);
+
+  @injectable
+  CoursesRepository get coursesRepository => CoursesRepositoryImpl(coursesService);
 
   @injectable
   EnterpriseRepository get enterpriseRepostory => EnterpriseRepositoryimpl(enterpriseService);
@@ -95,6 +123,19 @@ abstract class AppModule {
       getUsers: GetUsersUseCase(usersRepository),
   delete: DeleteUsersUseCase(usersRepository));
 
+  @injectable
+  CategoriesUseCases get categoriesUseCases => CategoriesUseCases(
+      create: CreateCategoriesUseCase(categoriesRepository),
+      getCategories: GetCategoriesUseCase(categoriesRepository),
+      update: UpdateCategoriesUseCase(categoriesRepository),
+      delete: DeleteCategoriesUseCase(categoriesRepository));
+
+  @injectable
+  CoursesUseCases get coursesUseCases => CoursesUseCases(
+      create: CreateCoursesUseCase(coursesRepository),
+      getCoursesByCategory: GetCoursesByCategoryUseCase(coursesRepository),
+      update: UpdateCoursesUseCase(coursesRepository),
+      delete: DeleteCoursesUseCase(coursesRepository));
 
   @injectable
   EnterpriseUseCases get enterpriseUseCases => EnterpriseUseCases(
