@@ -8,6 +8,8 @@ import 'package:sppp/src/presentation/pages/admin/enterprise/update/AdminEnterpr
 import 'package:sppp/src/presentation/pages/admin/home/AdminHomePage.dart';
 import 'package:sppp/src/presentation/pages/admin/practice/PracticePage.dart';
 import 'package:sppp/src/presentation/pages/admin/registerpractice/RegisterPracticePage.dart';
+import 'package:sppp/src/presentation/pages/admin/roles/list/RolesListPage.dart';
+import 'package:sppp/src/presentation/pages/admin/users/list/AdminUsersListPage.dart';
 import 'package:sppp/src/presentation/pages/auth/login/LoginInitial.dart';
 import 'package:sppp/src/presentation/pages/auth/login/LoginPage.dart';
 import 'package:sppp/src/presentation/pages/auth/menu/actividad/ActividadContent.dart';
@@ -50,6 +52,8 @@ class MyApp extends StatelessWidget {
               'student/home': (BuildContext context) => StudentHomePage(),
               //ADMIN
               'admin/home': (BuildContext context) => AdminHomePage(),
+              'admin/users/view': (BuildContext context) => AdminUsersListPage(),
+              'admin/roles/view': (BuildContext context) => RolesListPage(),
               'admin/enterprise/list': (BuildContext context) => AdminEnterpriseListPage(),
               'admin/enterprise/create': (BuildContext context) => AdminEnterpriseCreatePage(),
               'admin/enterprise/update': (BuildContext context) => AdminEnterpriseUpdatePage(),

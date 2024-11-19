@@ -17,14 +17,18 @@ import 'package:sppp/src/data/dataSource/remote/services/EnterpriseServices.dart
     as _i1007;
 import 'package:sppp/src/data/dataSource/remote/services/RolesServices.dart'
     as _i1025;
+import 'package:sppp/src/data/dataSource/remote/services/UsersServices.dart'
+    as _i1053;
 import 'package:sppp/src/di/AppModule.dart' as _i187;
 import 'package:sppp/src/domain/repository/AuthRepository.dart' as _i672;
 import 'package:sppp/src/domain/repository/EnterpriseRepository.dart' as _i825;
 import 'package:sppp/src/domain/repository/RolesRepository.dart' as _i845;
+import 'package:sppp/src/domain/repository/UsersRepository.dart' as _i576;
 import 'package:sppp/src/domain/useCases/auth/AuthUseCases.dart' as _i956;
 import 'package:sppp/src/domain/useCases/enterprise/EnterpriseUseCases.dart'
     as _i463;
 import 'package:sppp/src/domain/useCases/roles/RolesUseCases.dart' as _i933;
+import 'package:sppp/src/domain/useCases/users/UsersUseCases.dart' as _i746;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -42,12 +46,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factoryAsync<String>(() => appModule.token);
     gh.factory<_i353.AuthServices>(() => appModule.authServices);
     gh.factory<_i1025.RolesService>(() => appModule.rolesService);
+    gh.factory<_i1053.UsersServices>(() => appModule.usersServices);
     gh.factory<_i1007.EnterpriseService>(() => appModule.enterpriseService);
     gh.factory<_i672.AuthRepository>(() => appModule.authRepository);
     gh.factory<_i845.RolesRepository>(() => appModule.rolesRepository);
+    gh.factory<_i576.UsersRepository>(() => appModule.usersRepository);
     gh.factory<_i825.EnterpriseRepository>(() => appModule.enterpriseRepostory);
     gh.factory<_i956.AuthUseCases>(() => appModule.authUseCases);
     gh.factory<_i933.RolesUseCases>(() => appModule.rolesUseCases);
+    gh.factory<_i746.UsersUseCases>(() => appModule.usersUseCases);
     gh.factory<_i463.EnterpriseUseCases>(() => appModule.enterpriseUseCases);
     return this;
   }
