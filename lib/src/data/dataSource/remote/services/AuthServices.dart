@@ -1,13 +1,13 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as https;
 import 'package:sppp/src/data/api/ApiConfig.dart';
-import 'package:sppp/src/domain/utils/ListToString.dart';
 import 'package:sppp/src/domain/utils/Resource.dart';
 import 'package:sppp/src/domain/models/AuthResponse.dart';
 import 'package:sppp/src/domain/models/User.dart';
 
 class AuthServices {
+
+
   Future<Resource<AuthResponse>> login(String email, String password) async {
     try {
       //print('email:$email');
@@ -48,27 +48,6 @@ class AuthServices {
         return Success(authResponse);
       } else {
         return Error(data['message']);
-      }
-    } catch (e) {
-      print('Error $e');
-      return Error(e.toString());
-    }
-  }
-
-  Future<Resource<List<User>>> getUser() async {
-    try {
-      // hhtp://192.168.1.89:3000/roles
-      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/users');
-      Map<String, String> headers = {"Content-Type": "application/json"};
-      final response = await https.get(url, headers: headers);
-      final data = json.decode(response.body);
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        List<User> roles = User.fromJsonList(data);
-        return Success(roles);
-      } else {
-        //ERROR
-        return Error(ListToString(data['message']));
       }
     } catch (e) {
       print('Error $e');

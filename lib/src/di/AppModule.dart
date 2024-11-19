@@ -3,16 +3,18 @@ import 'package:sppp/src/data/dataSource/local/SharedPref.dart';
 import 'package:sppp/src/data/dataSource/remote/services/AuthServices.dart';
 import 'package:sppp/src/data/dataSource/remote/services/EnterpriseServices.dart';
 import 'package:sppp/src/data/dataSource/remote/services/RolesServices.dart';
+import 'package:sppp/src/data/dataSource/remote/services/UsersServices.dart';
 import 'package:sppp/src/data/repository/AuthRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/EnterpriseRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/RolesRepositoryImpl.dart';
+import 'package:sppp/src/data/repository/UsersRepositoryImpl.dart';
 import 'package:sppp/src/domain/models/AuthResponse.dart';
 import 'package:sppp/src/domain/repository/AuthRepository.dart';
 import 'package:sppp/src/domain/repository/EnterpriseRepository.dart';
 import 'package:sppp/src/domain/repository/RolesRepository.dart';
+import 'package:sppp/src/domain/repository/UsersRepository.dart';
 import 'package:sppp/src/domain/useCases/auth/AuthUseCases.dart';
 import 'package:sppp/src/domain/useCases/auth/GetUserSessionUseCase.dart';
-import 'package:sppp/src/domain/useCases/auth/GetUserUseCase.dart';
 import 'package:sppp/src/domain/useCases/auth/LoginUseCase.dart';
 import 'package:sppp/src/domain/useCases/auth/LogoutUseCase.dart';
 import 'package:sppp/src/domain/useCases/auth/RegisterUseCase.dart';
@@ -25,6 +27,9 @@ import 'package:sppp/src/domain/useCases/enterprise/UpdateEnterpriseUseCase.dart
 import 'package:sppp/src/domain/useCases/roles/CreateRolesUseCase.dart';
 import 'package:sppp/src/domain/useCases/roles/GetRolesUseCases.dart';
 import 'package:sppp/src/domain/useCases/roles/RolesUseCases.dart';
+import 'package:sppp/src/domain/useCases/users/DeleteUsersUseCase.dart';
+import 'package:sppp/src/domain/useCases/users/GetUsersUseCase.dart';
+import 'package:sppp/src/domain/useCases/users/UsersUseCases.dart';
 
 @module
 abstract class AppModule {
@@ -48,7 +53,10 @@ abstract class AppModule {
   AuthServices get authServices => AuthServices();
 
   @injectable
-  RolesService get rolesService => RolesService();
+  RolesService get rolesService => RolesService(token);
+
+  @injectable
+  UsersServices get usersServices => UsersServices(token);
 
   @injectable
   EnterpriseService get enterpriseService => EnterpriseService(token);
@@ -62,6 +70,9 @@ abstract class AppModule {
   RolesRepository get rolesRepository => RolesRepositoryImpl(rolesService);
 
   @injectable
+  UsersRepository get usersRepository => UsersRepositoryImpl(usersServices);
+
+  @injectable
   EnterpriseRepository get enterpriseRepostory => EnterpriseRepositoryimpl(enterpriseService);
 
   //USECASES
@@ -69,7 +80,6 @@ abstract class AppModule {
   AuthUseCases get authUseCases => AuthUseCases(
       login: LoginUseCase(authRepository),
       register: RegisterUseCase(authRepository),
-      getUser: GetUserUseCase(authRepository),
       getUserSession: GetUserSessionUseCase(authRepository),
       saveUserSession: SaveUserSessionUseCase(authRepository),
       logout: LogoutUseCase(authRepository));
@@ -79,6 +89,11 @@ abstract class AppModule {
   RolesUseCases get rolesUseCases => RolesUseCases(
       create: CreateRolesUseCase(rolesRepository),
       getRoles: GetRolesUseCase(rolesRepository));
+
+  @injectable
+  UsersUseCases get usersUseCases => UsersUseCases(
+      getUsers: GetUsersUseCase(usersRepository),
+  delete: DeleteUsersUseCase(usersRepository));
 
 
   @injectable

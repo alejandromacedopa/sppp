@@ -1,15 +1,21 @@
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:sppp/src/data/api/ApiConfig.dart';
+import 'package:sppp/src/data/dataSource/remote/services/EnterpriseServices.dart';
 import 'package:sppp/src/domain/utils/ListToString.dart';
 import 'package:sppp/src/domain/utils/Resource.dart';
 import 'package:sppp/src/domain/models/Roles.dart';
+import 'package:path/path.dart';
 
 class RolesService {
+  Future<String> token;
+
+  RolesService(this.token);
+
   Future<Resource<Roles>> create(Roles roles) async {
     try {
-      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/roles');
+      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/rol');
       Map<String, String> headers = {"Content-Type": "application/json"};
       String body = json.encode(roles.toJson());
 
@@ -30,21 +36,22 @@ class RolesService {
 
   Future<Resource<List<Roles>>> getRoles() async {
     try {
-      // hhtp://192.168.1.89:3000/roles
-      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/roles');
-      Map<String, String> headers = {"Content-Type": "application/json"};
+      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/rol');
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "Authorization": await token
+      };
       final response = await http.get(url, headers: headers);
       final data = json.decode(response.body);
-
       if (response.statusCode == 200 || response.statusCode == 201) {
-        List<Roles> roles = Roles.fromJsonList(data);
-        return Success(roles);
+        List<Roles> enterprise = Roles.fromJsonList(data);
+        return Success(enterprise);
       } else {
-        //ERROR
+        // ERROR
         return Error(ListToString(data['message']));
       }
     } catch (e) {
-      print('Error $e');
+      print('Error: $e');
       return Error(e.toString());
     }
   }

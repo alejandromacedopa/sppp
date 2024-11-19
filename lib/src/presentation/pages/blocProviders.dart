@@ -3,12 +3,14 @@ import 'package:sppp/Injection.dart';
 import 'package:sppp/src/domain/useCases/auth/AuthUseCases.dart';
 import 'package:sppp/src/domain/useCases/enterprise/EnterpriseUseCases.dart';
 import 'package:sppp/src/domain/useCases/roles/RolesUseCases.dart';
+import 'package:sppp/src/domain/useCases/users/UsersUseCases.dart';
 import 'package:sppp/src/presentation/pages/admin/enterprise/create/bloc/AdminEnterpriseCreateBloc.dart';
 import 'package:sppp/src/presentation/pages/admin/enterprise/create/bloc/AdminEnterpriseCreateEvent.dart';
 import 'package:sppp/src/presentation/pages/admin/enterprise/list/bloc/AdminEnterpriseListBloc.dart';
 import 'package:sppp/src/presentation/pages/admin/enterprise/update/bloc/AdminEnterpriseUpdateBloc.dart';
 import 'package:sppp/src/presentation/pages/admin/home/bloc/AdminHomeBloc.dart';
 import 'package:sppp/src/presentation/pages/admin/roles/list/bloc/AdminRolesListBloc.dart';
+import 'package:sppp/src/presentation/pages/admin/users/list/bloc/AdminUsersListBloc.dart';
 import 'package:sppp/src/presentation/pages/auth/login/bloc/LoginBloc.dart';
 import 'package:sppp/src/presentation/pages/auth/login/bloc/LoginEvent.dart';
 import 'package:sppp/src/presentation/pages/auth/roles/bloc/RolesBloc.dart';
@@ -29,6 +31,8 @@ List<BlocProvider> blocProviders = [
       create: (context) => AdminHomeBloc(locator<AuthUseCases>())),
   BlocProvider<AdminRolesListBloc>(
       create: (context) => AdminRolesListBloc(locator<RolesUseCases>())),
+  BlocProvider<AdminUsersListBloc>(
+      create: (context) => AdminUsersListBloc(locator<UsersUseCases>())),
 
   BlocProvider<AdminEnterpriseListBloc>(
       create: (context) => AdminEnterpriseListBloc(locator<EnterpriseUseCases>())),

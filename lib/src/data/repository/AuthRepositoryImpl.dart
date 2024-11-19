@@ -1,5 +1,6 @@
 import 'package:sppp/src/data/dataSource/local/SharedPref.dart';
 import 'package:sppp/src/data/dataSource/remote/services/AuthServices.dart';
+import 'package:sppp/src/data/dataSource/remote/services/UsersServices.dart';
 import 'package:sppp/src/domain/utils/Resource.dart';
 import 'package:sppp/src/domain/models/AuthResponse.dart';
 import 'package:sppp/src/domain/models/User.dart';
@@ -40,8 +41,4 @@ class AuthRepositoryImpl implements AuthRepository {
     sharedPref.save('user', authResponse.toJson());
   }
 
-  @override
-  Future<Resource<List<User>>> getUser() {
-    return authServices.getUser();
-  }
 }
