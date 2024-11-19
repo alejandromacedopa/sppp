@@ -4,7 +4,7 @@ import 'package:sppp/src/data/api/ApiConfig.dart';
 import 'package:sppp/src/domain/models/User.dart';
 import 'package:sppp/src/domain/utils/ListToString.dart';
 import 'package:sppp/src/domain/utils/Resource.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as https;
 
 class UsersServices {
   Future<String> token;
@@ -18,7 +18,7 @@ class UsersServices {
         "Content-Type": "application/json",
         "Authorization": await token
       };
-      final response = await http.get(url, headers: headers);
+      final response = await https.get(url, headers: headers);
       final data = json.decode(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
         List<User> user = User.fromJsonList(data);
@@ -40,7 +40,7 @@ class UsersServices {
         "Content-Type": "application/json",
         "Authorization": await token
       };
-      final response = await http.delete(url, headers: headers);
+      final response = await https.delete(url, headers: headers);
       final data = json.decode(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
         return Success(true);

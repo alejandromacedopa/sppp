@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sppp/Injection.dart';
+import 'package:sppp/src/presentation/pages/admin/category/create/AdminCategoryCreatePage.dart';
+import 'package:sppp/src/presentation/pages/admin/category/list/AdminCategoryListPage.dart';
+import 'package:sppp/src/presentation/pages/admin/category/update/AdminCategoryUpdatePage.dart';
+import 'package:sppp/src/presentation/pages/admin/courses/create/AdminCoursesCreatePage.dart';
+import 'package:sppp/src/presentation/pages/admin/courses/list/AdminCoursesListPage.dart';
+import 'package:sppp/src/presentation/pages/admin/courses/update/AdminCoursesUpdatePage.dart';
 import 'package:sppp/src/presentation/pages/admin/enterprise/create/AdminEnterpriseCreatePage.dart';
 import 'package:sppp/src/presentation/pages/admin/enterprise/list/AdminEnterpriseListPage.dart';
 import 'package:sppp/src/presentation/pages/admin/enterprise/update/AdminEnterpriseUpdatePage.dart';
@@ -54,9 +60,18 @@ class MyApp extends StatelessWidget {
               'admin/home': (BuildContext context) => AdminHomePage(),
               'admin/users/view': (BuildContext context) => AdminUsersListPage(),
               'admin/roles/view': (BuildContext context) => RolesListPage(),
+              //ENTERPRISES
               'admin/enterprise/list': (BuildContext context) => AdminEnterpriseListPage(),
               'admin/enterprise/create': (BuildContext context) => AdminEnterpriseCreatePage(),
               'admin/enterprise/update': (BuildContext context) => AdminEnterpriseUpdatePage(),
+              //CATEGORY
+              'admin/category/create': (BuildContext context) => AdminCategoryCreatePage(),
+              'admin/category/update': (BuildContext context) => AdminCategoryUpdatePage(),
+              //COURSES
+              'admin/courses/list': (BuildContext context) => AdminCoursesListPage(),
+              'admin/courses/create': (BuildContext context) => AdminCoursesCreatePage(),
+              'admin/courses/update': (BuildContext context) => AdminCoursesUpdatePage(),
+
 
               'admin/practicas': (BuildContext context) =>
                   RegisterPracticePage(),

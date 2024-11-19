@@ -1,9 +1,19 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sppp/Injection.dart';
 import 'package:sppp/src/domain/useCases/auth/AuthUseCases.dart';
+import 'package:sppp/src/domain/useCases/category/CategoryUseCases.dart';
+import 'package:sppp/src/domain/useCases/courses/CoursesUseCases.dart';
 import 'package:sppp/src/domain/useCases/enterprise/EnterpriseUseCases.dart';
 import 'package:sppp/src/domain/useCases/roles/RolesUseCases.dart';
 import 'package:sppp/src/domain/useCases/users/UsersUseCases.dart';
+import 'package:sppp/src/presentation/pages/admin/category/create/bloc/AdminCategoryCreateBloc.dart';
+import 'package:sppp/src/presentation/pages/admin/category/create/bloc/AdminCategoryCreateEvent.dart';
+import 'package:sppp/src/presentation/pages/admin/category/list/bloc/AdminCategoryListBloc.dart';
+import 'package:sppp/src/presentation/pages/admin/category/update/bloc/AdminCategoryUpdateBloc.dart';
+import 'package:sppp/src/presentation/pages/admin/courses/create/bloc/AdminCoursesCreateBloc.dart';
+import 'package:sppp/src/presentation/pages/admin/courses/create/bloc/AdminCoursesCreateEvent.dart';
+import 'package:sppp/src/presentation/pages/admin/courses/list/bloc/AdminCoursesListBloc.dart';
+import 'package:sppp/src/presentation/pages/admin/courses/update/bloc/AdminCoursesUpdateBloc.dart';
 import 'package:sppp/src/presentation/pages/admin/enterprise/create/bloc/AdminEnterpriseCreateBloc.dart';
 import 'package:sppp/src/presentation/pages/admin/enterprise/create/bloc/AdminEnterpriseCreateEvent.dart';
 import 'package:sppp/src/presentation/pages/admin/enterprise/list/bloc/AdminEnterpriseListBloc.dart';
@@ -33,7 +43,24 @@ List<BlocProvider> blocProviders = [
       create: (context) => AdminRolesListBloc(locator<RolesUseCases>())),
   BlocProvider<AdminUsersListBloc>(
       create: (context) => AdminUsersListBloc(locator<UsersUseCases>())),
-
+//CATEGORY
+  BlocProvider<AdminCategoryListBloc>(
+      create: (context) => AdminCategoryListBloc(locator<CategoriesUseCases>())),
+  BlocProvider<AdminCategoryCreateBloc>(
+      create: (context) => AdminCategoryCreateBloc(locator<CategoriesUseCases>())
+        ..add(AdminCategoryCreateInitEvent())),
+  BlocProvider<AdminCategoryUpdateBloc>(
+      create: (context) =>
+          AdminCategoryUpdateBloc(locator<CategoriesUseCases>())),
+//COURSES
+  BlocProvider<AdminCoursesListBloc>(
+      create: (context) => AdminCoursesListBloc(locator<CoursesUseCases>())),
+  BlocProvider<AdminCoursesCreateBloc>(
+      create: (context) => AdminCoursesCreateBloc(locator<CoursesUseCases>())),
+  BlocProvider<AdminCoursesUpdateBloc>(
+      create: (context) =>
+          AdminCoursesUpdateBloc(locator<CoursesUseCases>())),
+  //ENTERPRISE
   BlocProvider<AdminEnterpriseListBloc>(
       create: (context) => AdminEnterpriseListBloc(locator<EnterpriseUseCases>())),
   BlocProvider<AdminEnterpriseCreateBloc>(

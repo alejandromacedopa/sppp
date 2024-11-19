@@ -1,35 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:sppp/src/domain/models/Roles.dart';
-import 'package:sppp/src/presentation/pages/admin/roles/list/bloc/AdminRolesListBloc.dart';
+import 'package:sppp/src/domain/models/Courses.dart';
+import 'package:sppp/src/presentation/pages/admin/courses/list/bloc/AdminCoursesListBloc.dart';
+import 'package:sppp/src/presentation/pages/admin/courses/list/bloc/AdminCoursesListEvent.dart';
 
-class AdminRolesListItem extends StatefulWidget {
-  final AdminRolesListBloc? bloc;
-  final Roles? roles;
+class AdminCoursesListItem extends StatefulWidget {
+  final AdminCoursesListBloc? bloc;
+  final Courses? courses;
 
-  AdminRolesListItem(this.bloc, this.roles);
+  AdminCoursesListItem(this.bloc, this.courses);
 
   @override
-  _AdminRolesListItemState createState() => _AdminRolesListItemState();
+  _AdminCoursesListItemState createState() => _AdminCoursesListItemState();
 }
 
-class _AdminRolesListItemState extends State<AdminRolesListItem> {
+class _AdminCoursesListItemState extends State<AdminCoursesListItem> {
   bool isPressed = false;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, 'admin/product/list');
+        // Navigator.pushNamed(context, 'admin/product/list', arguments: category);
       },
       onTapDown: (_) => setState(() => isPressed = true),
       onTapUp: (_) => setState(() => isPressed = false),
       onTapCancel: () => setState(() => isPressed = false),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
+        duration: Duration(milliseconds: 200),
         curve: Curves.easeInOut,
-        transform: Matrix4.identity()..scale(isPressed ? 0.98 : 1.0),
-        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-        padding: const EdgeInsets.all(16),
+        transform: Matrix4.identity()..scale(isPressed ? 0.98 : 1.0), // Escala al presionar
+        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+        padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
@@ -45,30 +46,17 @@ class _AdminRolesListItemState extends State<AdminRolesListItem> {
         ),
         child: Row(
           children: [
-            // Barra de color indicador
-            Container(
-              width: 5,
-              height: 70,
-              decoration: BoxDecoration(
-                color: Colors.blueAccent,
-                borderRadius: BorderRadius.circular(4),
-              ),
-            ),
-            const SizedBox(width: 16),
-            // Imagen lateral
+            // Imagen del curso
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: widget.roles?.image != null
+              child: widget.courses?.image1?.isNotEmpty ?? false
                   ? FadeInImage.assetNetwork(
-                placeholder: 'assets/img/noimage.png',
-                image: widget.roles!.image!,
-                fit: BoxFit.cover,
+                placeholder: 'assets/img/no-image.png',
+                image: widget.courses!.image1!,
+                fit: BoxFit.contain,
                 width: 70,
                 height: 70,
-                fadeInDuration: const Duration(milliseconds: 500),
-                imageErrorBuilder: (context, error, stackTrace) {
-                  return const Icon(Icons.broken_image, size: 60);
-                },
+                fadeInDuration: Duration(seconds: 1),
               )
                   : Container(
                 width: 70,
@@ -81,70 +69,67 @@ class _AdminRolesListItemState extends State<AdminRolesListItem> {
                 ),
               ),
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: 16),
             // Contenido de la tarjeta
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.roles?.name ?? 'Sin nombre',
-                    style: const TextStyle(
-                      fontSize: 20,
+                    widget.courses?.name ?? '',
+                    style: TextStyle(
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.black87,
-                      shadows: [
-                        Shadow(
-                          offset: Offset(0, 1),
-                          blurRadius: 1,
-                          color: Colors.black26,
-                        ),
-                      ],
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 6),
+                  SizedBox(height: 8),
                   Text(
-                    widget.roles?.route ?? 'Sin ruta',
+                    widget.courses?.description ?? '',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       color: Colors.grey[700],
-                      height: 1.4,
-                      fontWeight: FontWeight.w500,
                     ),
-                    maxLines: 1,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    '\$ ${widget.courses?.price.toString() ?? ''}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(width: 12),
-            // Botones de acción
+            SizedBox(width: 12),
+            // Botones de acción con estilo
             Column(
               children: [
-                ElevatedButton(
+                IconButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, 'create/roles', arguments: widget.roles);
+                    Navigator.pushNamed(
+                      context,
+                      'admin/courses/update',
+                      arguments: widget.courses,
+                    );
                   },
-                  style: ElevatedButton.styleFrom(
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(8),
-                    backgroundColor: Colors.blueAccent,
-                  ),
-                  child: const Icon(Icons.edit, color: Colors.white, size: 20),
+                  icon: Icon(Icons.edit),
+                  color: Colors.blueAccent,
+                  tooltip: 'Editar Curso',
                 ),
-                const SizedBox(height: 8),
-                ElevatedButton(
+                SizedBox(height: 8),
+                IconButton(
                   onPressed: () {
                     _showDeleteConfirmationDialog(context);
                   },
-                  style: ElevatedButton.styleFrom(
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(8),
-                    backgroundColor: Colors.redAccent,
-                  ),
-                  child: const Icon(Icons.delete, color: Colors.white, size: 20),
+                  icon: Icon(Icons.delete),
+                  color: Colors.redAccent,
+                  tooltip: 'Eliminar Curso',
                 ),
               ],
             ),
@@ -154,11 +139,11 @@ class _AdminRolesListItemState extends State<AdminRolesListItem> {
     );
   }
 
-  // Diálogo de confirmación
+  // Método para mostrar el cuadro de confirmación
   void _showDeleteConfirmationDialog(BuildContext context) {
     showDialog(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: false,  // Evita que el usuario cierre el cuadro tocando fuera de él
       builder: (BuildContext context) {
         return Dialog(
           shape: RoundedRectangleBorder(
@@ -166,13 +151,17 @@ class _AdminRolesListItemState extends State<AdminRolesListItem> {
           ),
           elevation: 16,
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.warning_amber_rounded, color: Colors.amber[800], size: 50),
-                const SizedBox(height: 20),
-                const Text(
+                Icon(
+                  Icons.warning_amber_rounded,
+                  color: Colors.amber[800],
+                  size: 50,
+                ),
+                SizedBox(height: 20),
+                Text(
                   '¡Advertencia!',
                   style: TextStyle(
                     fontSize: 22,
@@ -180,19 +169,19 @@ class _AdminRolesListItemState extends State<AdminRolesListItem> {
                     color: Colors.black87,
                   ),
                 ),
-                const SizedBox(height: 12),
-                const Text(
-                  '¿Estás seguro de que deseas eliminar este rol? Esta acción no se puede deshacer.',
+                SizedBox(height: 12),
+                Text(
+                  '¿Estás seguro de que deseas eliminar este curso?\nEsta acción no se puede deshacer.',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        Navigator.of(context).pop(); // Cierra el cuadro de diálogo sin eliminar
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey[300],
@@ -200,14 +189,14 @@ class _AdminRolesListItemState extends State<AdminRolesListItem> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text('Cancelar', style: TextStyle(color: Colors.black87)),
+                      child: Text('Cancelar', style: TextStyle(color: Colors.black87)),
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        if (widget.roles != null) {
-                        // widget.bloc?.add(DeleteRoleEvent(id: widget.roles!.id!));
+                        if (widget.courses != null) {
+                          widget.bloc?.add(DeleteCourses(id: widget.courses!.id!));
                         }
-                        Navigator.of(context).pop();
+                        Navigator.of(context).pop(); // Cierra el cuadro de diálogo después de eliminar
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.redAccent,
@@ -215,7 +204,7 @@ class _AdminRolesListItemState extends State<AdminRolesListItem> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text('Eliminar', style: TextStyle(color: Colors.white)),
+                      child: Text('Eliminar', style: TextStyle(color: Colors.white)),
                     ),
                   ],
                 ),
