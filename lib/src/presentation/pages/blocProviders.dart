@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sppp/Injection.dart';
+import 'package:sppp/src/domain/useCases/ShoppingBag/ShoppingBagUseCases.dart';
+import 'package:sppp/src/domain/useCases/address/AddressUseCases.dart';
 import 'package:sppp/src/domain/useCases/auth/AuthUseCases.dart';
 import 'package:sppp/src/domain/useCases/category/CategoryUseCases.dart';
 import 'package:sppp/src/domain/useCases/courses/CoursesUseCases.dart';
@@ -11,7 +13,6 @@ import 'package:sppp/src/presentation/pages/admin/category/create/bloc/AdminCate
 import 'package:sppp/src/presentation/pages/admin/category/list/bloc/AdminCategoryListBloc.dart';
 import 'package:sppp/src/presentation/pages/admin/category/update/bloc/AdminCategoryUpdateBloc.dart';
 import 'package:sppp/src/presentation/pages/admin/courses/create/bloc/AdminCoursesCreateBloc.dart';
-import 'package:sppp/src/presentation/pages/admin/courses/create/bloc/AdminCoursesCreateEvent.dart';
 import 'package:sppp/src/presentation/pages/admin/courses/list/bloc/AdminCoursesListBloc.dart';
 import 'package:sppp/src/presentation/pages/admin/courses/update/bloc/AdminCoursesUpdateBloc.dart';
 import 'package:sppp/src/presentation/pages/admin/enterprise/create/bloc/AdminEnterpriseCreateBloc.dart';
@@ -25,13 +26,20 @@ import 'package:sppp/src/presentation/pages/auth/login/bloc/LoginBloc.dart';
 import 'package:sppp/src/presentation/pages/auth/login/bloc/LoginEvent.dart';
 import 'package:sppp/src/presentation/pages/auth/roles/bloc/RolesBloc.dart';
 import 'package:sppp/src/presentation/pages/auth/roles/bloc/RolesEvent.dart';
+import 'package:sppp/src/presentation/pages/student/ShoppingBag/bloc/StudentShoppingBagBloc.dart';
+import 'package:sppp/src/presentation/pages/student/address/create/bloc/StudentAddressCreateBloc.dart';
+import 'package:sppp/src/presentation/pages/student/address/create/bloc/StudentAddressCreateEvent.dart';
+import 'package:sppp/src/presentation/pages/student/address/list/bloc/StudentAddressListBloc.dart';
+import 'package:sppp/src/presentation/pages/student/category/list/bloc/StudentCategoryListBloc.dart';
+import 'package:sppp/src/presentation/pages/student/coruses/detail/bloc/StudentCoursesDetailBloc.dart';
+import 'package:sppp/src/presentation/pages/student/coruses/list/bloc/StudentCoursesListBloc.dart';
 import 'package:sppp/src/presentation/pages/student/home/bloc/StudentHomeBloc.dart';
 
 List<BlocProvider> blocProviders = [
   //AUTH
   BlocProvider<LoginBloc>(
       create: (context) =>
-          LoginBloc(locator<AuthUseCases>())..add(InitEvent())),
+      LoginBloc(locator<AuthUseCases>())..add(InitEvent())),
 
   BlocProvider<RolesBloc>(
       create: (context) =>
@@ -76,4 +84,28 @@ List<BlocProvider> blocProviders = [
   BlocProvider<StudentHomeBloc>(
       create: (context) => StudentHomeBloc(locator<AuthUseCases>())),
 
+  //CATEGORY
+  BlocProvider<StudentCategoryListBloc>(
+      create: (context) => StudentCategoryListBloc(locator<CategoriesUseCases>())),
+
+  //COURSES
+  BlocProvider<StudentCoursesListBloc>(
+      create: (context) => StudentCoursesListBloc(locator<CoursesUseCases>())),
+  BlocProvider<StudentCoursesDetailBloc>(
+      create: (context) =>
+          StudentCoursesDetailBloc(locator<ShoppingBagUseCases>())),
+
+  //SHOPPING BAG
+  BlocProvider<StudentShoppingBagBloc>(
+      create: (context) =>
+          StudentShoppingBagBloc(locator<ShoppingBagUseCases>())),
+
+  //ADDRESS
+  BlocProvider<StudentAddressCreateBloc>(
+      create: (context) => StudentAddressCreateBloc(
+          locator<AddressUseCases>(), locator<AuthUseCases>())
+        ..add(StudentAddressCreateInitEvent())),
+  BlocProvider<StudentAddressListBloc>(
+      create: (context) => StudentAddressListBloc(
+          locator<AddressUseCases>(), locator<AuthUseCases>())),
 ];

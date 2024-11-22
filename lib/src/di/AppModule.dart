@@ -1,24 +1,42 @@
 import 'package:injectable/injectable.dart';
 import 'package:sppp/src/data/dataSource/local/SharedPref.dart';
+import 'package:sppp/src/data/dataSource/remote/services/AddressService.dart';
 import 'package:sppp/src/data/dataSource/remote/services/AuthServices.dart';
 import 'package:sppp/src/data/dataSource/remote/services/CategoryServices.dart';
 import 'package:sppp/src/data/dataSource/remote/services/CoursesSercices.dart';
 import 'package:sppp/src/data/dataSource/remote/services/EnterpriseServices.dart';
 import 'package:sppp/src/data/dataSource/remote/services/RolesServices.dart';
 import 'package:sppp/src/data/dataSource/remote/services/UsersServices.dart';
+import 'package:sppp/src/data/repository/AddressRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/AuthRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/CategoryRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/CoursesRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/EnterpriseRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/RolesRepositoryImpl.dart';
+import 'package:sppp/src/data/repository/ShoppingBagRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/UsersRepositoryImpl.dart';
 import 'package:sppp/src/domain/models/AuthResponse.dart';
+import 'package:sppp/src/domain/models/ShoppingBagRepository.dart';
+import 'package:sppp/src/domain/repository/AddressRepository.dart';
 import 'package:sppp/src/domain/repository/AuthRepository.dart';
 import 'package:sppp/src/domain/repository/CategoryRepository.dart';
 import 'package:sppp/src/domain/repository/CoursesRepository.dart';
 import 'package:sppp/src/domain/repository/EnterpriseRepository.dart';
 import 'package:sppp/src/domain/repository/RolesRepository.dart';
 import 'package:sppp/src/domain/repository/UsersRepository.dart';
+import 'package:sppp/src/domain/useCases/ShoppingBag/AddShoppingBagUseCase.dart';
+import 'package:sppp/src/domain/useCases/ShoppingBag/DeleteItemShoppingBagUseCase.dart';
+import 'package:sppp/src/domain/useCases/ShoppingBag/DeleteShoppingBagUseCase.dart';
+import 'package:sppp/src/domain/useCases/ShoppingBag/GetCoursesShoppingBagUseCase.dart';
+import 'package:sppp/src/domain/useCases/ShoppingBag/GetTotalShoppingBagUseCase.dart';
+import 'package:sppp/src/domain/useCases/ShoppingBag/ShoppingBagUseCases.dart';
+import 'package:sppp/src/domain/useCases/address/AddressUseCases.dart';
+import 'package:sppp/src/domain/useCases/address/CreateAddressUseCase.dart';
+import 'package:sppp/src/domain/useCases/address/DeleteAddressFromSessionUseCase.dart';
+import 'package:sppp/src/domain/useCases/address/DeleteAddressUseCase.dart';
+import 'package:sppp/src/domain/useCases/address/GetAddressSessionUseCase.dart';
+import 'package:sppp/src/domain/useCases/address/GetUserAddressUseCase.dart';
+import 'package:sppp/src/domain/useCases/address/SaveAddressInSessionUseCase.dart';
 import 'package:sppp/src/domain/useCases/auth/AuthUseCases.dart';
 import 'package:sppp/src/domain/useCases/auth/GetUserSessionUseCase.dart';
 import 'package:sppp/src/domain/useCases/auth/LoginUseCase.dart';
@@ -83,6 +101,9 @@ abstract class AppModule {
   @injectable
   EnterpriseService get enterpriseService => EnterpriseService(token);
 
+  @injectable
+  AddressService get addressService => AddressService(token);
+
   //REPOSITORY
   @injectable
   AuthRepository get authRepository =>
@@ -102,6 +123,15 @@ abstract class AppModule {
 
   @injectable
   EnterpriseRepository get enterpriseRepostory => EnterpriseRepositoryimpl(enterpriseService);
+
+
+  @injectable
+  AddressRepository get addressRepository =>
+      AddressRepositoryImpl(addressService, sharedPref);
+
+  @injectable
+  ShoppingBagRepository get shoppingBagRepository =>
+      ShoppingBagRepositoryImpl(sharedPref);
 
   //USECASES
   @injectable
@@ -143,7 +173,25 @@ abstract class AppModule {
       getEnterprise: GetEnterpriseUseCase(enterpriseRepostory),
       update: UpdateEnterpriseUseCase(enterpriseRepostory),
       delete: DeleteEnterpriseUseCase(enterpriseRepostory));
+
+  @injectable
+  ShoppingBagUseCases get shoppingBagUseCases => ShoppingBagUseCases(
+      add: AddShoppingBagUseCase(shoppingBagRepository),
+      getCourses: GetCoursesShoppingBagUseCase(shoppingBagRepository),
+      deleteItem: DeleteItemShoppinBagUseCase(shoppingBagRepository),
+      deleteShoppingBag: deleteShoppingBagUseCase(shoppingBagRepository),
+      getTotal: GetTotalShoppingBagUseCase(shoppingBagRepository));
+
+  @injectable
+  AddressUseCases get addressUseCases => AddressUseCases(
+      create: CreateAddressUseCase(addressRepository),
+      getUserAddress: GetUserAddressUseCase(addressRepository),
+      saveAddressInSession: SaveAddressInSessionUseCase(addressRepository),
+      getAddressSession: GetAddressSessionUseCase(addressRepository),
+      delete: DeleteAddressUseCase(addressRepository),
+      deleteFromSession: DeleteAddressFromSessionUseCase(addressRepository));
 }
+
 
 
 
