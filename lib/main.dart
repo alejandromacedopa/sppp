@@ -29,6 +29,9 @@ import 'package:sppp/src/presentation/pages/student/address/list/StudentAddressL
 import 'package:sppp/src/presentation/pages/student/coruses/detail/StudentCoursesDetailPage.dart';
 import 'package:sppp/src/presentation/pages/student/coruses/list/StudentCoursesListPage.dart';
 import 'package:sppp/src/presentation/pages/student/home/StudentHomePage.dart';
+import 'package:sppp/src/presentation/pages/student/payment/form/StudentPaymentFormPage.dart';
+import 'package:sppp/src/presentation/pages/student/payment/installments/StudentPaymentInstallmentsPage.dart';
+import 'package:sppp/src/presentation/pages/student/payment/status/ClientPaymentStatusPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -70,6 +73,14 @@ class MyApp extends StatelessWidget {
                   StudentAddressListPage(),
               'student/address/create': (BuildContext context) =>
                   StudentAddressCreatePage(),
+
+              //PAYMENTS
+              'student/payment/form': (BuildContext context) =>
+                  StudentPaymentFormPage(),
+              'student/payment/installments': (BuildContext context) =>
+                  StudentPaymentInstallmentsPage(),
+              'student/payment/status': (BuildContext context) =>
+                  StudentPaymentStatusPage(),
               //ADMIN
               'admin/home': (BuildContext context) => AdminHomePage(),
               'admin/users/view': (BuildContext context) => AdminUsersListPage(),

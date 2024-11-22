@@ -31,7 +31,7 @@ class StudentShoppingBagBottomBar extends StatelessWidget {
                 child: DefaultButton(
                     text: 'CONFIRMAR ORDEN',
                     onPressed: () {
-                      Navigator.pushNamed(context, 'student/address/list');
+                      Navigator.pushNamed(context, 'student/payment/form');
                     }),
               )
             ],

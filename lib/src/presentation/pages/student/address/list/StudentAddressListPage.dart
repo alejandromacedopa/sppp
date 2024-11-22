@@ -45,7 +45,7 @@ class _StudentAddressListPageState extends State<StudentAddressListPage> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.pushNamed(context, 'client/payment/form');
+            Navigator.pushNamed(context, 'student/payment/form');
           },
           backgroundColor: Colors.black,
           child: Icon(
