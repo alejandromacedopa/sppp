@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sppp/Injection.dart';
+import 'package:sppp/src/domain/useCases/MercadoPago/MercadoPagoUseCases.dart';
 import 'package:sppp/src/domain/useCases/ShoppingBag/ShoppingBagUseCases.dart';
 import 'package:sppp/src/domain/useCases/address/AddressUseCases.dart';
 import 'package:sppp/src/domain/useCases/auth/AuthUseCases.dart';
@@ -34,6 +35,9 @@ import 'package:sppp/src/presentation/pages/student/category/list/bloc/StudentCa
 import 'package:sppp/src/presentation/pages/student/coruses/detail/bloc/StudentCoursesDetailBloc.dart';
 import 'package:sppp/src/presentation/pages/student/coruses/list/bloc/StudentCoursesListBloc.dart';
 import 'package:sppp/src/presentation/pages/student/home/bloc/StudentHomeBloc.dart';
+import 'package:sppp/src/presentation/pages/student/payment/form/bloc/StudentPaymentFormBloc.dart';
+import 'package:sppp/src/presentation/pages/student/payment/form/bloc/StudentPaymentFormEvent.dart';
+import 'package:sppp/src/presentation/pages/student/payment/installments/bloc/StudentPaymentInstallmentsBloc.dart';
 
 List<BlocProvider> blocProviders = [
   //AUTH
@@ -108,4 +112,16 @@ List<BlocProvider> blocProviders = [
   BlocProvider<StudentAddressListBloc>(
       create: (context) => StudentAddressListBloc(
           locator<AddressUseCases>(), locator<AuthUseCases>())),
+  //PAYMENTS
+  BlocProvider<StudentPaymentFormBloc>(
+      create: (context) => StudentPaymentFormBloc(
+          locator<MercadoPagoUseCases>(), locator<ShoppingBagUseCases>())
+        ..add(StudentPaymentFormInitEvent())),
+  BlocProvider<StudentPaymentInstallmentsBloc>(
+      create: (context) => StudentPaymentInstallmentsBloc(
+        locator<MercadoPagoUseCases>(),
+        locator<AuthUseCases>(),
+        locator<ShoppingBagUseCases>(),
+        locator<AddressUseCases>(),
+      )),
 ];

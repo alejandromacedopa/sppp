@@ -5,6 +5,7 @@ import 'package:sppp/src/data/dataSource/remote/services/AuthServices.dart';
 import 'package:sppp/src/data/dataSource/remote/services/CategoryServices.dart';
 import 'package:sppp/src/data/dataSource/remote/services/CoursesSercices.dart';
 import 'package:sppp/src/data/dataSource/remote/services/EnterpriseServices.dart';
+import 'package:sppp/src/data/dataSource/remote/services/MercadoPagoService.dart';
 import 'package:sppp/src/data/dataSource/remote/services/RolesServices.dart';
 import 'package:sppp/src/data/dataSource/remote/services/UsersServices.dart';
 import 'package:sppp/src/data/repository/AddressRepositoryImpl.dart';
@@ -12,6 +13,7 @@ import 'package:sppp/src/data/repository/AuthRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/CategoryRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/CoursesRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/EnterpriseRepositoryImpl.dart';
+import 'package:sppp/src/data/repository/MercadoPagoRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/RolesRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/ShoppingBagRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/UsersRepositoryImpl.dart';
@@ -22,8 +24,14 @@ import 'package:sppp/src/domain/repository/AuthRepository.dart';
 import 'package:sppp/src/domain/repository/CategoryRepository.dart';
 import 'package:sppp/src/domain/repository/CoursesRepository.dart';
 import 'package:sppp/src/domain/repository/EnterpriseRepository.dart';
+import 'package:sppp/src/domain/repository/MercadoPagoRepository.dart';
 import 'package:sppp/src/domain/repository/RolesRepository.dart';
 import 'package:sppp/src/domain/repository/UsersRepository.dart';
+import 'package:sppp/src/domain/useCases/MercadoPago/CreateCardTokenUseCase.dart';
+import 'package:sppp/src/domain/useCases/MercadoPago/CreatePaymentUseCase.dart';
+import 'package:sppp/src/domain/useCases/MercadoPago/GetIdentificationTypesUseCase.dart';
+import 'package:sppp/src/domain/useCases/MercadoPago/GetInstallmentsUseCase.dart';
+import 'package:sppp/src/domain/useCases/MercadoPago/MercadoPagoUseCases.dart';
 import 'package:sppp/src/domain/useCases/ShoppingBag/AddShoppingBagUseCase.dart';
 import 'package:sppp/src/domain/useCases/ShoppingBag/DeleteItemShoppingBagUseCase.dart';
 import 'package:sppp/src/domain/useCases/ShoppingBag/DeleteShoppingBagUseCase.dart';
@@ -104,6 +112,9 @@ abstract class AppModule {
   @injectable
   AddressService get addressService => AddressService(token);
 
+  @injectable
+  MercadoPagoService get mercadoPagoService => MercadoPagoService(token);
+
   //REPOSITORY
   @injectable
   AuthRepository get authRepository =>
@@ -132,6 +143,10 @@ abstract class AppModule {
   @injectable
   ShoppingBagRepository get shoppingBagRepository =>
       ShoppingBagRepositoryImpl(sharedPref);
+
+  @injectable
+  MercadoPagoRepository get mercadoPagoRepository =>
+      MercadoPagoRepositoryImpl(mercadoPagoService);
 
   //USECASES
   @injectable
@@ -190,6 +205,15 @@ abstract class AppModule {
       getAddressSession: GetAddressSessionUseCase(addressRepository),
       delete: DeleteAddressUseCase(addressRepository),
       deleteFromSession: DeleteAddressFromSessionUseCase(addressRepository));
+
+
+  @injectable
+  MercadoPagoUseCases get mercadoPagoUseCases => MercadoPagoUseCases(
+      getIdentificationTypes:
+      GetIdentificationTypesUseCase(mercadoPagoRepository),
+      createCardToken: CreateCardTokenUseCase(mercadoPagoRepository),
+      getInstallments: GetInstallmentsUseCase(mercadoPagoRepository),
+      createPaymentUseCase: CreatePaymentUseCase(mercadoPagoRepository));
 }
 
 
