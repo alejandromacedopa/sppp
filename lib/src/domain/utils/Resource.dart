@@ -13,3 +13,7 @@ class Error<T> extends Resource<T> {
   final String message;
   Error(this.message);
 }
+class Errors<T> extends Resource<T> {
+  final String? message;
+  Errors({this.message});
+}

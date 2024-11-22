@@ -18,6 +18,13 @@ class StudentHomeBloc extends Bloc<StudentHomeEvent, StudentHomeState> {
 
   Future<void> _onStudentChangeDrawerPage(
       StudentChangeDrawerPage event, Emitter<StudentHomeState> emit) async {
-    emit(state.copyWith(pageIndex: event.pageIndex));
+    // Mostrar loading antes de cambiar la página
+    emit(state.copyWith(isLoading: true));
+
+    // Simular un pequeño retraso para mostrar el spinner
+    await Future.delayed(const Duration(milliseconds: 1600));
+
+    // Cambiar la página y ocultar el loading
+    emit(state.copyWith(pageIndex: event.pageIndex, isLoading: false));
   }
 }

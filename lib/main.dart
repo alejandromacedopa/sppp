@@ -24,6 +24,10 @@ import 'package:sppp/src/presentation/pages/auth/menu/actividad/gestionar/Gestio
 import 'package:sppp/src/presentation/pages/auth/menu/empresa/EmpresaContent.dart';
 import 'package:sppp/src/presentation/pages/auth/roles/RolesPage.dart';
 import 'package:sppp/src/presentation/pages/blocProviders.dart';
+import 'package:sppp/src/presentation/pages/student/address/create/StudentAddressCreatePage.dart';
+import 'package:sppp/src/presentation/pages/student/address/list/StudentAddressListPage.dart';
+import 'package:sppp/src/presentation/pages/student/coruses/detail/StudentCoursesDetailPage.dart';
+import 'package:sppp/src/presentation/pages/student/coruses/list/StudentCoursesListPage.dart';
 import 'package:sppp/src/presentation/pages/student/home/StudentHomePage.dart';
 
 void main() async {
@@ -51,11 +55,21 @@ class MyApp extends StatelessWidget {
             initialRoute: 'login',
             routes: {
               //AUTH
-              //'login': (BuildContext context) => LoginInitial(),
+             // 'initial': (BuildContext context) => SplashScreen(),
               'login': (BuildContext context) => LoginPage(),
               'roles': (BuildContext context) => RolesPage(),
               //STUDENT
               'student/home': (BuildContext context) => StudentHomePage(),
+              //COURSES
+              'student/courses/list': (BuildContext context) => StudentCoursesListPage(),
+              'student/courses/detail': (BuildContext context) =>
+                  StudentCoursesDetailPage(),
+
+              //ADDRESS
+              'student/address/list': (BuildContext context) =>
+                  StudentAddressListPage(),
+              'student/address/create': (BuildContext context) =>
+                  StudentAddressCreatePage(),
               //ADMIN
               'admin/home': (BuildContext context) => AdminHomePage(),
               'admin/users/view': (BuildContext context) => AdminUsersListPage(),
@@ -71,7 +85,6 @@ class MyApp extends StatelessWidget {
               'admin/courses/list': (BuildContext context) => AdminCoursesListPage(),
               'admin/courses/create': (BuildContext context) => AdminCoursesCreatePage(),
               'admin/courses/update': (BuildContext context) => AdminCoursesUpdatePage(),
-
 
               'admin/practicas': (BuildContext context) =>
                   RegisterPracticePage(),
