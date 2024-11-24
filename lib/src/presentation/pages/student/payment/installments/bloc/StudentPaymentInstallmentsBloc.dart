@@ -51,15 +51,16 @@ class StudentPaymentInstallmentsBloc extends Bloc<StudentPaymentInstallmentsEven
     List<Courses> courses = await shoppingBagUseCases.getCourses.run();
 
     // Convertir los productos para que `price` sea de tipo int
-    List<Courses> sanitizedProducts = courses.map((courses) {
+    List<Courses> sanitizedCourses = courses.map((courses) {
       // Sanitize y convertir price a int
-      final productJson = courses.toJson();
-      productJson["price"] =
-          productJson["price"].toInt(); // Convertir `price` a int
+      final coursesJson = courses.toJson();
+      coursesJson["price"] =
+          coursesJson["price"].toInt(); // Convertir `price` a int
       // Convertir de nuevo el Map a un objeto Product
-      return Courses.fromJson(productJson);
+      return Courses.fromJson(coursesJson);
     }).toList();
 
+    print('id del usuario antes del body: ${authResponse.user.id}');
     MercadoPagoPaymentBody body = MercadoPagoPaymentBody(
         transactionAmount: totalToPay.toInt(),
         token: event.mercadoPagoCardTokenResponse.id,
@@ -76,7 +77,8 @@ class StudentPaymentInstallmentsBloc extends Bloc<StudentPaymentInstallmentsEven
         order: Order(
             idClient: authResponse.user.id!,
             idAddress: address.id!,
-            courses: sanitizedProducts));
+            courses: sanitizedCourses));
+    print('id del usuario despues del body: ${authResponse.user.id}');
     Resource responsePayment =
     await mercadoPagoUseCases.createPaymentUseCase.run(body);
     emit(state.copyWith(responsePayment: responsePayment));

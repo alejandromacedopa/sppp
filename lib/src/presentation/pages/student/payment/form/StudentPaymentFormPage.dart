@@ -44,7 +44,7 @@ class _StudentPaymentFormPageState extends State<StudentPaymentFormPage> {
                 responseState.data as MercadoPagoCardTokenResponse;
             print('Respuesta Card Token: ${response.toJson()}');
             Navigator.pushNamedAndRemoveUntil(
-                context, 'client/payment/installments', (route) => false,
+                context, 'student/payment/installments', (route) => false,
                 arguments: {
                   'mercadoPagoCardTokenResponse': response,
                   'amount': state.totalToPay.toString()

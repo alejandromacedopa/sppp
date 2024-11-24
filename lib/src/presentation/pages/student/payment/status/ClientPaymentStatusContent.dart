@@ -40,7 +40,7 @@ class StudentPaymentStatusContent extends StatelessWidget {
         text: 'Finalizar',
         onPressed: () {
           Navigator.pushNamedAndRemoveUntil(
-              context, 'client/home', (route) => false);
+              context, 'student/home', (route) => false);
         },
         color: Colors.white,
         colorText: Colors.black,

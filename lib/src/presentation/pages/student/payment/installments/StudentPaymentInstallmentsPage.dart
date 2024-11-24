@@ -56,7 +56,7 @@ class _ClientPaymentInstallmentsPageState
                 responsePayment.data as MercadoPagoPaymentResponse2;
             print('response payment:${mercadoPagoPaymentResponse.toJson()}');
             Navigator.pushNamedAndRemoveUntil(
-                context, 'client/payment/status', (route) => false,
+                context, 'student/payment/status', (route) => false,
                 arguments: mercadoPagoPaymentResponse);
           } else if (responsePayment is Error) {
             Fluttertoast.showToast(

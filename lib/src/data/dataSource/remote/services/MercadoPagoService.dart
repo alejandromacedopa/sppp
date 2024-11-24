@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as https;
 import 'package:sppp/src/data/api/ApiConfig.dart';
 import 'package:sppp/src/domain/models/MercadoPagoCardTokenBody.dart';
 import 'package:sppp/src/domain/models/MercadoPagoCardTokenResponse.dart';
@@ -21,12 +21,12 @@ class MercadoPagoService {
       getIdentificationTypes() async {
     try {
       Uri url =
-          Uri.http(ApiConfig.API_ECOMMERCE, '/payment/identification-type');
+          Uri.https(ApiConfig.API_ECOMMERCE, '/payment/identification-type');
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "Authorization": await token
       };
-      final response = await http.get(url, headers: headers);
+      final response = await https.get(url, headers: headers);
       final data = json.decode(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
         List<MercadoPagoIdentificationType> identificationTypes =
@@ -45,13 +45,13 @@ class MercadoPagoService {
   Future<Resource<MercadoPagoCardTokenResponse>> createCardToken(
       MercadoPagoCardTokenBody mercadoPagoCardTokenBody) async {
     try {
-      Uri url = Uri.http(ApiConfig.API_ECOMMERCE, '/payment/card-token');
+      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/payment/card-token');
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "Authorization": await token
       };
       String body = json.encode(mercadoPagoCardTokenBody.toJson());
-      final response = await http.post(url, headers: headers, body: body);
+      final response = await https.post(url, headers: headers, body: body);
       final data = json.decode(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
         MercadoPagoCardTokenResponse mercadoPagoCardTokenResponse =
@@ -71,7 +71,7 @@ class MercadoPagoService {
       MercadoPagoPaymentBody mercadoPagoPaymentBody) async {
     try {
       // TODO: Cambiar en el backend y frontend para evitar redundancia
-      Uri url = Uri.http(ApiConfig.API_ECOMMERCE, '/payment/payment');
+      Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/payment/payment');
       final uuid = Uuid();
       Map<String, String> headers = {
         "Content-Type": "application/json",
@@ -81,7 +81,7 @@ class MercadoPagoService {
 
       String body = json.encode(mercadoPagoPaymentBody);
 
-      final response = await http
+      final response = await https
           .post(url, headers: headers, body: body)
           .timeout(Duration(seconds: 120));
       print('Respuesta completa del servidor: ${response.body}');
@@ -111,13 +111,13 @@ class MercadoPagoService {
   Future<Resource<MercadoPagoInstallments>> getInstallments(
       String bin, String amount) async {
     try {
-      Uri url = Uri.http(ApiConfig.API_ECOMMERCE,
+      Uri url = Uri.https(ApiConfig.API_ECOMMERCE,
           '/payment/installment/$bin/$amount');
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "Authorization": await token
       };
-      final response = await http.get(url, headers: headers);
+      final response = await https.get(url, headers: headers);
 
       final data = json.decode(response.body);
 
