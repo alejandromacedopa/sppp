@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sppp/main.dart';
 import 'package:sppp/src/presentation/pages/student/ShoppingBag/StudentShoppingBagPage.dart';
 import 'package:sppp/src/presentation/pages/student/category/list/StudentCategoryListPage.dart';
+import 'package:sppp/src/presentation/pages/student/coruses/list/StudentCoursesListPage.dart';
 import 'package:sppp/src/presentation/pages/student/home/bloc/StudentHomeBloc.dart';
 import 'package:sppp/src/presentation/pages/student/home/bloc/StudentHomeEvent.dart';
 import 'package:sppp/src/presentation/pages/student/home/bloc/StudentHomeState.dart';
+import 'package:sppp/src/presentation/pages/student/profile/ProfileInfoPage.dart';
 
 class StudentHomePage extends StatefulWidget {
   const StudentHomePage({super.key});
@@ -16,20 +18,38 @@ class StudentHomePage extends StatefulWidget {
 
 class _StudentHomePage extends State<StudentHomePage> with SingleTickerProviderStateMixin {
   late StudentHomeBloc _bloc;
+  late AnimationController _lineAnimationController;
+  late Animation<double> _lineAnimation;
 
   final List<Widget> pageList = <Widget>[
     StudentCategoryListPage(),
     StudentCategoryListPage(),
     StudentShoppingBagPage(),
-
-    //RolesListPage(),
-    //AdminUsersListPage(),
+    ProfileInfoPage(),
   ];
 
   @override
   void initState() {
     super.initState();
     _bloc = BlocProvider.of<StudentHomeBloc>(context);
+
+    // Animation Controller for the moving line
+    _lineAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    )..repeat(reverse: true); // Repeats the animation in a loop
+    _lineAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(
+        parent: _lineAnimationController,
+        curve: Curves.easeInOut,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _lineAnimationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -42,35 +62,101 @@ class _StudentHomePage extends State<StudentHomePage> with SingleTickerProviderS
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.blue.shade800, Colors.blue.shade600],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
+              colors: [Colors.deepPurple.shade900, Colors.blueAccent.shade400],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                blurRadius: 8,
-                spreadRadius: 2,
+                color: Colors.black.withOpacity(0.3),
+                blurRadius: 15,
+                spreadRadius: 5,
               ),
             ],
           ),
         ),
-        title: const Text(
-          'Panel Estudiante',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-            color: Colors.white,
-            shadows: [
-              Shadow(
-                blurRadius: 4,
-                color: Colors.black26,
-                offset: Offset(1, 2),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Ícono con animación de rotación
+            TweenAnimationBuilder<double>(
+              tween: Tween<double>(begin: 0, end: 1),
+              duration: const Duration(seconds: 2),
+              curve: Curves.elasticOut,
+              builder: (context, value, child) {
+                return Transform.rotate(
+                  angle: value * 3.14 / 4, // Rota 45 grados
+                  child: Icon(
+                    Icons.waving_hand,
+                    color: Colors.amber.shade500,
+                    size: 36,
+                  ),
+                );
+              },
+            ),
+            const SizedBox(width: 10),
+            // Título animado con opacidad y deslizamiento
+            AnimatedOpacity(
+              opacity: 1.0,
+              duration: const Duration(seconds: 1),
+              curve: Curves.easeInOut,
+              child: Text(
+                '¡Hola de nuevo!',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 28,
+                  foreground: Paint()
+                    ..shader = LinearGradient(
+                      colors: [Colors.amber.shade300, Colors.orange.shade600],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ).createShader(const Rect.fromLTWH(0, 0, 200, 70)),
+                  shadows: [
+                    Shadow(
+                      blurRadius: 6,
+                      color: Colors.black38,
+                      offset: Offset(2, 2),
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         centerTitle: true,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(50),
+          child: Column(
+            children: [
+              // Línea decorativa que se mueve
+              AnimatedBuilder(
+                animation: _lineAnimationController,
+                builder: (context, child) {
+                  return Container(
+                    width: MediaQuery.of(context).size.width * _lineAnimation.value,
+                    height: 2,
+                    color: Colors.amber.shade600,
+                  );
+                },
+              ),
+              const SizedBox(height: 8),
+              // Subtítulo animado
+              AnimatedOpacity(
+                opacity: 1.0,
+                duration: const Duration(milliseconds: 800),
+                curve: Curves.easeInOut,
+                child: Text(
+                  'Estamos felices de verte aquí 😊',
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.85),
+                    fontStyle: FontStyle.italic,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
       body: BlocBuilder<StudentHomeBloc, StudentHomeState>(
         builder: (context, state) {
@@ -111,10 +197,10 @@ class _StudentHomePage extends State<StudentHomePage> with SingleTickerProviderS
                 }
               },
               items: [
-                _buildNavItem(Icons.business, 'Cursos', state.pageIndex == 0),
-                _buildNavItem(Icons.person_4, 'item2', state.pageIndex == 1),
+                _buildNavItem(Icons.category, 'Cursos', state.pageIndex == 0),
+                _buildNavItem(Icons.stacked_line_chart, 'item2', state.pageIndex == 1),
                 _buildNavItem(Icons.shopping_bag, 'Carrito', state.pageIndex == 2),
-                _buildNavItem(Icons.category, 'item4', state.pageIndex == 3),
+                _buildNavItem(Icons.edit, 'Perfil', state.pageIndex == 3),
                 _buildNavItem(Icons.logout, 'Cerrar Sesión', state.pageIndex == 4, color: Colors.redAccent),
               ],
               selectedItemColor: Colors.blue.shade700,
@@ -288,27 +374,10 @@ class _StudentHomePage extends State<StudentHomePage> with SingleTickerProviderS
     );
   }
 
-  // Método para el indicador de carga mejorado
   Widget _buildLoadingIndicator() {
     return Center(
-      child: AnimatedScale(
-        scale: 1.1,
-        duration: const Duration(milliseconds: 300),
-        child: Container(
-          width: 80,
-          height: 80,
-          decoration: BoxDecoration(
-            color: Colors.transparent,
-            shape: BoxShape.circle,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: CircularProgressIndicator(
-              strokeWidth: 4,
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.amber.shade700),
-            ),
-          ),
-        ),
+      child: CircularProgressIndicator(
+        color: Colors.amber.shade500,
       ),
     );
   }

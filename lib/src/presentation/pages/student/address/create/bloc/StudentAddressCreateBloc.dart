@@ -10,8 +10,8 @@ import 'package:sppp/src/presentation/utils/BlocFormItem.dart';
 
 class StudentAddressCreateBloc
     extends Bloc<StudentAddressCreateEvent, StudentAddressCreateState> {
-  final AddressUseCases addressUseCases;
-  final AuthUseCases authUseCases;
+  AddressUseCases addressUseCases;
+  AuthUseCases authUseCases;
 
   StudentAddressCreateBloc(this.addressUseCases, this.authUseCases)
       : super(StudentAddressCreateState()) {
@@ -26,54 +26,40 @@ class StudentAddressCreateBloc
   Future<void> _onClientAddressCreateInitEvent(
       StudentAddressCreateInitEvent event,
       Emitter<StudentAddressCreateState> emit) async {
-    try {
-      AuthResponse? authResponse = await authUseCases.getUserSession.run();
-      emit(state.copyWith(formKey: formKey));
-      if (authResponse?.user.id != null) {
-        emit(state.copyWith(
-          formKey: formKey,
-          idUser: int.tryParse(authResponse!.user.id!) ?? 0,
-        ));
-      }
-    } catch (e) {
-      emit(state.copyWith(
-          response: Errors(message: 'Error al cargar la sesión del usuario')));
+    AuthResponse? authResponse = await authUseCases.getUserSession.run();
+    emit(state.copyWith(formKey: formKey));
+    if (authResponse != null) {
+      int? userId = int.tryParse(authResponse.user.id ?? '');
+      emit(state.copyWith(formKey: formKey, idUser: userId));
     }
   }
+
 
   Future<void> _onAddressChanged(
       AddressChanged event, Emitter<StudentAddressCreateState> emit) async {
     emit(state.copyWith(
-        address: _validateField(event.address.value, 'Ingresa la dirección'),
+        address: BlocFormItem(
+            value: event.address.value,
+            error:
+            event.address.value.isNotEmpty ? null : 'Ingresa la direccion'),
         formKey: formKey));
   }
 
   Future<void> _onNeighborhoodChanged(
       NeighborhoodChanged event, Emitter<StudentAddressCreateState> emit) async {
     emit(state.copyWith(
-        neighborhood: _validateField(
-            event.neighborhood.value, 'Ingresa el barrio'),
+        neighborhood: BlocFormItem(
+            value: event.neighborhood.value,
+            error: event.neighborhood.value.isNotEmpty
+                ? null
+                : 'Ingresa el barrio'),
         formKey: formKey));
   }
 
   Future<void> _onFormSubmit(
       FormSubmit event, Emitter<StudentAddressCreateState> emit) async {
-    try {
-      emit(state.copyWith(response: Loading(), formKey: formKey));
-      final response = await addressUseCases.create.run(state.toAddress());
-      if (response is Success) {
-        emit(state.copyWith(response: response, formKey: formKey));
-      } else if (response is Error) {
-        emit(state.copyWith(response: response, formKey: formKey));
-      }
-    } catch (e) {
-      emit(state.copyWith(
-          response: Errors(message: 'Error al enviar el formulario')));
-    }
-  }
-
-  BlocFormItem _validateField(String value, String errorMessage) {
-    return BlocFormItem(
-        value: value, error: value.isNotEmpty ? null : errorMessage);
+    emit(state.copyWith(response: Loading(), formKey: formKey));
+    Resource response = await addressUseCases.create.run(state.toAddress());
+    emit(state.copyWith(response: response, formKey: formKey));
   }
 }
