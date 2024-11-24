@@ -1,7 +1,7 @@
 import 'package:sppp/src/domain/models/Courses.dart';
 
 class Order {
-  int idClient;
+  String idClient;
   int idAddress;
   List<Courses> courses;
 
@@ -14,7 +14,7 @@ class Order {
   factory Order.fromJson(Map<String, dynamic> json) => Order(
         idClient: json["id_client"],
         idAddress: json["id_address"],
-    courses: List<Courses>.from(
+        courses: List<Courses>.from(
             json["products"].map((x) => Courses.fromJson(x))),
       );
 

@@ -9,14 +9,14 @@ class StudentAddressCreateState extends Equatable {
   final BlocFormItem address;
   final BlocFormItem neighborhood;
   final Resource? response;
-  final int idUser;
+  final String idUser;
 
   const StudentAddressCreateState(
       {this.address = const BlocFormItem(error: 'Ingresa la direccion'),
       this.neighborhood = const BlocFormItem(error: 'Ingresa el barrio'),
       this.formKey,
       this.response,
-      this.idUser = 0});
+      this.idUser = ""});
 
   toAddress() => Address(
       address: address.value, neighborhood: neighborhood.value, idUser: idUser);
@@ -26,7 +26,7 @@ class StudentAddressCreateState extends Equatable {
       BlocFormItem? neighborhood,
       GlobalKey<FormState>? formKey,
       Resource? response,
-      int? idUser}) {
+      String? idUser}) {
     return StudentAddressCreateState(
         address: address ?? this.address,
         neighborhood: neighborhood ?? this.neighborhood,

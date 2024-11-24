@@ -18,7 +18,7 @@ class AddressRepositoryImpl implements AddressRepository {
   }
 
   @override
-  Future<Resource<List<Address>>> getUserAddress(int idUser) {
+  Future<Resource<List<Address>>> getUserAddress(String idUser) {
     return addressService.getUserAddress(idUser);
   }
 

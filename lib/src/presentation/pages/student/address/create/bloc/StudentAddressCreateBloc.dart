@@ -29,7 +29,7 @@ class StudentAddressCreateBloc
     AuthResponse? authResponse = await authUseCases.getUserSession.run();
     emit(state.copyWith(formKey: formKey));
     if (authResponse != null) {
-      int? userId = int.tryParse(authResponse.user.id ?? '');
+      String? userId = authResponse.user.id;
       emit(state.copyWith(formKey: formKey, idUser: userId));
     }
   }

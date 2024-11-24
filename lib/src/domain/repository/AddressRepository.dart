@@ -4,7 +4,7 @@ import 'package:sppp/src/domain/utils/Resource.dart';
 
 abstract class AddressRepository {
   Future<Resource<Address>> create(Address address);
-  Future<Resource<List<Address>>> getUserAddress(int idUser);
+  Future<Resource<List<Address>>> getUserAddress(String idUser);
   Future<void> saveAddressInSession(Address address);
   Future<Address?> getAddressSession();
   Future<Resource<bool>> delete(int id);

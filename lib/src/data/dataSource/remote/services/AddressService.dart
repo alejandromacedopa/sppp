@@ -34,7 +34,7 @@ class AddressService {
     }
   }
 
-  Future<Resource<List<Address>>> getUserAddress(int idUser) async {
+  Future<Resource<List<Address>>> getUserAddress(String idUser) async {
     try {
       Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/address/user/$idUser');
       Map<String, String> headers = {

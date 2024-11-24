@@ -5,5 +5,5 @@ class GetUserAddressUseCase {
 
   GetUserAddressUseCase(this.addressRepository);
 
-  run(int idUser) => addressRepository.getUserAddress(idUser);
+  run(String idUser) => addressRepository.getUserAddress(idUser);
 }
