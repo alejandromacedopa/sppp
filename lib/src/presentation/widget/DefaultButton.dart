@@ -5,12 +5,24 @@ class DefaultButton extends StatelessWidget {
   Function() onPressed;
   Color color;
   Color? colorText;
+  final Color backgroundColor;
+  final Color textColor;
+  final double borderRadius;
+  final EdgeInsets padding;
+  final double width;
+  final Icon? icon;// Agrega el parámetro width
 
   DefaultButton({
     required this.text,
     required this.onPressed,
-    this.color = Colors.black,
+    this.color = Colors.blue,
     this.colorText = Colors.white,
+    this.backgroundColor = Colors.blue,
+    this.textColor = Colors.white,
+    this.width = double.infinity,
+    this.borderRadius = 8.0,
+    this.icon, // Agregado parámetro de icono
+    this.padding = const EdgeInsets.symmetric(vertical: 10),
   });
 
   @override

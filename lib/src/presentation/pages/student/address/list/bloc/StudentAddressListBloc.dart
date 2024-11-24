@@ -9,8 +9,8 @@ import 'package:sppp/src/presentation/pages/student/address/list/bloc/StudentAdd
 
 class StudentAddressListBloc
     extends Bloc<StudentAddressListEvent, StudentAddressListState> {
-  final AddressUseCases addressUseCases;
-  final AuthUseCases authUseCases;
+  AddressUseCases addressUseCases;
+  AuthUseCases authUseCases;
 
   StudentAddressListBloc(this.addressUseCases, this.authUseCases)
       : super(StudentAddressListState()) {
@@ -22,74 +22,46 @@ class StudentAddressListBloc
 
   Future<void> _onGetUserAddress(
       GetUserAddress event, Emitter<StudentAddressListState> emit) async {
-    try {
+    AuthResponse? authResponse = await authUseCases.getUserSession.run();
+    if (authResponse != null) {
       emit(state.copyWith(response: Loading()));
-
-      final authResponse = await authUseCases.getUserSession.run();
-      if (authResponse?.user.id != null) {
-        final response =
-        await addressUseCases.getUserAddress.run(authResponse!.user.id!);
-        emit(state.copyWith(response: response));
-      } else {
-        emit(state.copyWith(
-            response: Errors(message: 'No se encontró la sesión del usuario.')));
-      }
-    } catch (e) {
-      emit(state.copyWith(
-          response: Errors(message: 'Error al cargar las direcciones.')));
+      Resource response =
+      await addressUseCases.getUserAddress.run(authResponse.user.id!);
+      emit(state.copyWith(response: response));
     }
   }
 
   Future<void> _onChangeRadioValue(
       ChangeRadioValue event, Emitter<StudentAddressListState> emit) async {
     emit(state.copyWith(radioValue: event.radioValue));
-    try {
-      await addressUseCases.saveAddressInSession.run(event.address);
-    } catch (e) {
-      emit(state.copyWith(
-          response: Errors(message: 'No se pudo guardar la dirección en la sesión.')));
-    }
+    await addressUseCases.saveAddressInSession.run(event.address);
   }
 
   Future<void> _onSetAddressSession(
       SetAddressSession event, Emitter<StudentAddressListState> emit) async {
-    try {
-      final addressSession = await addressUseCases.getAddressSession.run();
-
-      if (addressSession != null) {
-        final index = event.addressList
-            .indexWhere((address) => address.id == addressSession.id);
-
-        if (index != -1) {
-          emit(state.copyWith(radioValue: index));
-        }
+    Address? addressSession = await addressUseCases.getAddressSession.run();
+    print('Adress session:${addressSession?.toJson()}');
+    if (addressSession != null) {
+      int index = event.addressList
+          .indexWhere((address) => address.id == addressSession.id);
+      if (index != -1) {
+        // YA HEMOS SELECCIONADO UNA DIRECCION Y ESTA GUARDADA EN SESION
+        emit(state.copyWith(radioValue: index));
       }
-    } catch (e) {
-      emit(state.copyWith(
-          response: Errors(message: 'Error al establecer la dirección en la sesión.')));
     }
   }
 
   Future<void> _onDeleteAddress(
       DeleteAddress event, Emitter<StudentAddressListState> emit) async {
-    try {
-      emit(state.copyWith(response: Loading()));
-
-      final response = await addressUseCases.delete.run(event.id);
-      if (response is Success) {
-        final addressSession = await addressUseCases.getAddressSession.run();
-        if (addressSession?.id == event.id) {
-          await addressUseCases.deleteFromSession.run();
-          emit(state.copyWith(radioValue: null, response: response));
-        } else {
-          emit(state.copyWith(response: response));
-        }
-      } else {
-        emit(state.copyWith(response: response));
+    emit(state.copyWith(response: Loading()));
+    Resource response = await addressUseCases.delete.run(event.id);
+    emit(state.copyWith(response: response));
+    Address? addressSession = await addressUseCases.getAddressSession.run();
+    if (addressSession != null) {
+      if (addressSession.id == event.id) {
+        await addressUseCases.deleteFromSession.run();
+        emit(state.copyWith(radioValue: null));
       }
-    } catch (e) {
-      emit(state.copyWith(
-          response: Errors(message: 'Error al eliminar la dirección.')));
     }
   }
 }

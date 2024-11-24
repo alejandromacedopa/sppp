@@ -38,6 +38,8 @@ import 'package:sppp/src/presentation/pages/student/home/bloc/StudentHomeBloc.da
 import 'package:sppp/src/presentation/pages/student/payment/form/bloc/StudentPaymentFormBloc.dart';
 import 'package:sppp/src/presentation/pages/student/payment/form/bloc/StudentPaymentFormEvent.dart';
 import 'package:sppp/src/presentation/pages/student/payment/installments/bloc/StudentPaymentInstallmentsBloc.dart';
+import 'package:sppp/src/presentation/pages/student/profile/bloc/ProfileInfoBloc.dart';
+import 'package:sppp/src/presentation/pages/student/profile/bloc/ProfileInfoEvent.dart';
 
 List<BlocProvider> blocProviders = [
   //AUTH
@@ -91,6 +93,11 @@ List<BlocProvider> blocProviders = [
   //CATEGORY
   BlocProvider<StudentCategoryListBloc>(
       create: (context) => StudentCategoryListBloc(locator<CategoriesUseCases>())),
+
+  //PROFILE
+  BlocProvider<ProfileInfoBloc>(
+      create: (context) =>
+      ProfileInfoBloc(locator<AuthUseCases>())..add(ProfileInfoGetUser())),
 
   //COURSES
   BlocProvider<StudentCoursesListBloc>(
