@@ -51,7 +51,7 @@ class StudentPaymentStatusContent extends StatelessWidget {
   Widget _textMessage() {
     return paymentResponse?.status == 'approved'
         ? Text(
-            'Mira el estado de tu pedido en la seccion MIS PEDIDOS',
+            'Mira el estado de tu compra en mis compras',
             style: TextStyle(
               color: Colors.white,
               fontSize: 17,
