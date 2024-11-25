@@ -7,6 +7,7 @@ import 'package:sppp/src/presentation/pages/student/coruses/list/StudentCoursesL
 import 'package:sppp/src/presentation/pages/student/home/bloc/StudentHomeBloc.dart';
 import 'package:sppp/src/presentation/pages/student/home/bloc/StudentHomeEvent.dart';
 import 'package:sppp/src/presentation/pages/student/home/bloc/StudentHomeState.dart';
+import 'package:sppp/src/presentation/pages/student/orders/list/StudentOrdersListPage.dart';
 import 'package:sppp/src/presentation/pages/student/profile/ProfileInfoPage.dart';
 
 class StudentHomePage extends StatefulWidget {
@@ -23,9 +24,10 @@ class _StudentHomePage extends State<StudentHomePage> with SingleTickerProviderS
 
   final List<Widget> pageList = <Widget>[
     StudentCategoryListPage(),
-    StudentCategoryListPage(),
+    StudentOrdersListPage(),
     StudentShoppingBagPage(),
     ProfileInfoPage(),
+
   ];
 
   @override
@@ -198,7 +200,7 @@ class _StudentHomePage extends State<StudentHomePage> with SingleTickerProviderS
               },
               items: [
                 _buildNavItem(Icons.category, 'Cursos', state.pageIndex == 0),
-                _buildNavItem(Icons.stacked_line_chart, 'item2', state.pageIndex == 1),
+                _buildNavItem(Icons.shopping_cart_checkout, 'Compras', state.pageIndex == 1),
                 _buildNavItem(Icons.shopping_bag, 'Carrito', state.pageIndex == 2),
                 _buildNavItem(Icons.edit, 'Perfil', state.pageIndex == 3),
                 _buildNavItem(Icons.logout, 'Cerrar Sesión', state.pageIndex == 4, color: Colors.redAccent),

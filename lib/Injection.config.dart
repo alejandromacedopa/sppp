@@ -23,6 +23,8 @@ import 'package:sppp/src/data/dataSource/remote/services/EnterpriseServices.dart
     as _i1007;
 import 'package:sppp/src/data/dataSource/remote/services/MercadoPagoService.dart'
     as _i119;
+import 'package:sppp/src/data/dataSource/remote/services/OrderServices.dart'
+    as _i40;
 import 'package:sppp/src/data/dataSource/remote/services/RolesServices.dart'
     as _i1025;
 import 'package:sppp/src/data/dataSource/remote/services/UsersServices.dart'
@@ -35,6 +37,7 @@ import 'package:sppp/src/domain/repository/CategoryRepository.dart' as _i440;
 import 'package:sppp/src/domain/repository/CoursesRepository.dart' as _i179;
 import 'package:sppp/src/domain/repository/EnterpriseRepository.dart' as _i825;
 import 'package:sppp/src/domain/repository/MercadoPagoRepository.dart' as _i72;
+import 'package:sppp/src/domain/repository/OrderRepository.dart' as _i931;
 import 'package:sppp/src/domain/repository/RolesRepository.dart' as _i845;
 import 'package:sppp/src/domain/repository/UsersRepository.dart' as _i576;
 import 'package:sppp/src/domain/useCases/address/AddressUseCases.dart'
@@ -47,6 +50,7 @@ import 'package:sppp/src/domain/useCases/enterprise/EnterpriseUseCases.dart'
     as _i463;
 import 'package:sppp/src/domain/useCases/MercadoPago/MercadoPagoUseCases.dart'
     as _i882;
+import 'package:sppp/src/domain/useCases/orders/OrdersUseCases.dart' as _i620;
 import 'package:sppp/src/domain/useCases/roles/RolesUseCases.dart' as _i933;
 import 'package:sppp/src/domain/useCases/ShoppingBag/ShoppingBagUseCases.dart'
     as _i30;
@@ -74,6 +78,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1007.EnterpriseService>(() => appModule.enterpriseService);
     gh.factory<_i147.AddressService>(() => appModule.addressService);
     gh.factory<_i119.MercadoPagoService>(() => appModule.mercadoPagoService);
+    gh.factory<_i40.OrderService>(() => appModule.orderService);
     gh.factory<_i672.AuthRepository>(() => appModule.authRepository);
     gh.factory<_i845.RolesRepository>(() => appModule.rolesRepository);
     gh.factory<_i576.UsersRepository>(() => appModule.usersRepository);
@@ -81,6 +86,7 @@ extension GetItInjectableX on _i174.GetIt {
         () => appModule.categoriesRepository);
     gh.factory<_i179.CoursesRepository>(() => appModule.coursesRepository);
     gh.factory<_i825.EnterpriseRepository>(() => appModule.enterpriseRepostory);
+    gh.factory<_i931.OrderRepository>(() => appModule.orderRepository);
     gh.factory<_i1033.AddressRepository>(() => appModule.addressRepository);
     gh.factory<_i690.ShoppingBagRepository>(
         () => appModule.shoppingBagRepository);
@@ -94,6 +100,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i463.EnterpriseUseCases>(() => appModule.enterpriseUseCases);
     gh.factory<_i30.ShoppingBagUseCases>(() => appModule.shoppingBagUseCases);
     gh.factory<_i1028.AddressUseCases>(() => appModule.addressUseCases);
+    gh.factory<_i620.OrdersUseCases>(() => appModule.ordersUseCases);
     gh.factory<_i882.MercadoPagoUseCases>(() => appModule.mercadoPagoUseCases);
     return this;
   }

@@ -15,59 +15,96 @@ class StudentAddressListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      child: Card(
-        elevation: 4.0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+      padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 8,
+              offset: Offset(0, 4),
+            ),
+          ],
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Radio Button
-              Radio<int>(
-                value: index,
-                groupValue: state.radioValue,
-                onChanged: (value) {
-                  if (value != null) {
-                    bloc?.add(ChangeRadioValue(radioValue: value, address: address));
-                  }
-                },
-                activeColor: Colors.blue,
+              // Radio Button with Custom Design
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: state.radioValue == index
+                        ? Theme.of(context).primaryColor
+                        : Colors.grey[300]!,
+                    width: 2,
+                  ),
+                ),
+                child: Radio<int>(
+                  value: index,
+                  groupValue: state.radioValue,
+                  onChanged: (value) {
+                    if (value != null) {
+                      bloc?.add(ChangeRadioValue(radioValue: value, address: address));
+                    }
+                  },
+                  activeColor: Theme.of(context).primaryColor,
+                ),
               ),
-              // Address details
+              const SizedBox(width: 16.0),
+              // Address Details
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       address.address,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
-                        color: Colors.black87,
+                        color: Color(0xFF333333),
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(height: 4.0),
+                    const SizedBox(height: 6.0),
                     Text(
                       address.neighborhood,
                       style: TextStyle(
-                        fontWeight: FontWeight.w400,
                         fontSize: 14,
-                        color: Colors.black54,
+                        color: Colors.grey[600],
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
               ),
-              // Delete button
-              IconButton(
-                onPressed: () {
-                  bloc?.add(DeleteAddress(id: address.id!));
-                },
-                icon: Icon(Icons.delete, color: Colors.red),
+              const SizedBox(width: 16.0),
+              // Delete Button with Tooltip
+              Tooltip(
+                message: "Eliminar dirección",
+                child: GestureDetector(
+                  onTap: () {
+                    bloc?.add(DeleteAddress(id: address.id!));
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      color: Colors.red.withOpacity(0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                      size: 24.0,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),

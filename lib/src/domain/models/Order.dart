@@ -11,16 +11,23 @@ class Order {
     required this.courses,
   });
 
+  static List<Order> fromJsonList(List<dynamic>? jsonList) {
+    if (jsonList == null) return [];
+    return jsonList.map((item) => Order.fromJson(item)).toList();
+  }
+
   factory Order.fromJson(Map<String, dynamic> json) => Order(
-        idClient: json["id_client"],
-        idAddress: json["id_address"],
-        courses: List<Courses>.from(
-            json["courses"].map((x) => Courses.fromJson(x))),
-      );
+    idClient: json["id_client"] ?? '',
+    idAddress: json["id_address"] ?? 0,
+    courses: json["courses"] == null
+        ? []
+        : List<Courses>.from(
+        json["courses"].map((x) => Courses.fromJson(x))),
+  );
 
   Map<String, dynamic> toJson() => {
-        "id_client": idClient,
-        "id_address": idAddress,
-        "courses": List<dynamic>.from(courses.map((x) => x.toJson())),
-      };
+    "id_client": idClient,
+    "id_address": idAddress,
+    "courses": List<dynamic>.from(courses.map((x) => x.toJson())),
+  };
 }
