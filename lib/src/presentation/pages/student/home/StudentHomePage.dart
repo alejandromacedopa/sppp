@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sppp/main.dart';
 import 'package:sppp/src/presentation/pages/student/ShoppingBag/StudentShoppingBagPage.dart';
 import 'package:sppp/src/presentation/pages/student/category/list/StudentCategoryListPage.dart';
+import 'package:sppp/src/presentation/pages/student/evidences/list/AdminEvidenceListPage.dart';
 import 'package:sppp/src/presentation/pages/student/home/bloc/StudentHomeBloc.dart';
 import 'package:sppp/src/presentation/pages/student/home/bloc/StudentHomeEvent.dart';
 import 'package:sppp/src/presentation/pages/student/home/bloc/StudentHomeState.dart';
@@ -22,6 +23,7 @@ class _StudentHomePage extends State<StudentHomePage> with SingleTickerProviderS
   late Animation<double> _lineAnimation;
 
   final List<Widget> pageList = <Widget>[
+    //AdminEvidenceListPage(),
     StudentCategoryListPage(),
     StudentOrdersListPage(),
     StudentShoppingBagPage(),

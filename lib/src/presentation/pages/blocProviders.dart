@@ -7,6 +7,7 @@ import 'package:sppp/src/domain/useCases/auth/AuthUseCases.dart';
 import 'package:sppp/src/domain/useCases/category/CategoryUseCases.dart';
 import 'package:sppp/src/domain/useCases/courses/CoursesUseCases.dart';
 import 'package:sppp/src/domain/useCases/enterprise/EnterpriseUseCases.dart';
+import 'package:sppp/src/domain/useCases/evidences/EvidenceUseCases.dart';
 import 'package:sppp/src/domain/useCases/orders/OrdersUseCases.dart';
 import 'package:sppp/src/domain/useCases/roles/RolesUseCases.dart';
 import 'package:sppp/src/domain/useCases/users/UsersUseCases.dart';
@@ -35,6 +36,8 @@ import 'package:sppp/src/presentation/pages/student/address/list/bloc/StudentAdd
 import 'package:sppp/src/presentation/pages/student/category/list/bloc/StudentCategoryListBloc.dart';
 import 'package:sppp/src/presentation/pages/student/coruses/detail/bloc/StudentCoursesDetailBloc.dart';
 import 'package:sppp/src/presentation/pages/student/coruses/list/bloc/StudentCoursesListBloc.dart';
+import 'package:sppp/src/presentation/pages/student/evidences/create/bloc/AdminEvidenceCreateBloc.dart';
+import 'package:sppp/src/presentation/pages/student/evidences/list/bloc/AdminEvidenceListBloc.dart';
 import 'package:sppp/src/presentation/pages/student/home/bloc/StudentHomeBloc.dart';
 import 'package:sppp/src/presentation/pages/student/orders/list/bloc/StudentOrdersListBloc.dart';
 import 'package:sppp/src/presentation/pages/student/payment/form/bloc/StudentPaymentFormBloc.dart';
@@ -121,6 +124,15 @@ List<BlocProvider> blocProviders = [
   BlocProvider<StudentAddressListBloc>(
       create: (context) => StudentAddressListBloc(
           locator<AddressUseCases>(), locator<AuthUseCases>())),
+//evidence
+// EVIDENCES
+  BlocProvider<AdminEvidenceCreateBloc>(
+    create: (context) => AdminEvidenceCreateBloc(locator<EvidenceUseCases>()),
+  ),
+  BlocProvider<AdminEvidenceListBloc>(
+    create: (context) => AdminEvidenceListBloc(locator<EvidenceUseCases>()),
+  ),
+
 
   //order
 

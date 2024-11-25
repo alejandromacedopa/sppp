@@ -28,6 +28,7 @@ import 'package:sppp/src/presentation/pages/student/address/create/StudentAddres
 import 'package:sppp/src/presentation/pages/student/address/list/StudentAddressListPage.dart';
 import 'package:sppp/src/presentation/pages/student/coruses/detail/StudentCoursesDetailPage.dart';
 import 'package:sppp/src/presentation/pages/student/coruses/list/StudentCoursesListPage.dart';
+import 'package:sppp/src/presentation/pages/student/evidences/create/AdminEvidenceCreatePage.dart';
 import 'package:sppp/src/presentation/pages/student/home/StudentHomePage.dart';
 import 'package:sppp/src/presentation/pages/student/payment/form/StudentPaymentFormPage.dart';
 import 'package:sppp/src/presentation/pages/student/payment/installments/StudentPaymentInstallmentsPage.dart';
@@ -97,6 +98,9 @@ class MyApp extends StatelessWidget {
               'admin/courses/create': (BuildContext context) => AdminCoursesCreatePage(),
               'admin/courses/update': (BuildContext context) => AdminCoursesUpdatePage(),
 
+              //EVIDENCE
+              'admin/evidences/create': (BuildContext context) =>
+                  AdminEvidenceCreatePage(),
               'admin/practicas': (BuildContext context) =>
                   RegisterPracticePage(),
               'admin/viewpracticas': (BuildContext context) => PracticePage(),

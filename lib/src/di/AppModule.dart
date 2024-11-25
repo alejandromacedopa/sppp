@@ -1,19 +1,23 @@
 import 'package:injectable/injectable.dart';
 import 'package:sppp/src/data/dataSource/local/SharedPref.dart';
+import 'package:sppp/src/data/dataSource/remote/services/ActivitiesServices.dart';
 import 'package:sppp/src/data/dataSource/remote/services/AddressService.dart';
 import 'package:sppp/src/data/dataSource/remote/services/AuthServices.dart';
 import 'package:sppp/src/data/dataSource/remote/services/CategoryServices.dart';
 import 'package:sppp/src/data/dataSource/remote/services/CoursesSercices.dart';
 import 'package:sppp/src/data/dataSource/remote/services/EnterpriseServices.dart';
+import 'package:sppp/src/data/dataSource/remote/services/EvidenceService.dart';
 import 'package:sppp/src/data/dataSource/remote/services/MercadoPagoService.dart';
 import 'package:sppp/src/data/dataSource/remote/services/OrderServices.dart';
 import 'package:sppp/src/data/dataSource/remote/services/RolesServices.dart';
 import 'package:sppp/src/data/dataSource/remote/services/UsersServices.dart';
+import 'package:sppp/src/data/repository/ActivitiesRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/AddressRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/AuthRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/CategoryRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/CoursesRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/EnterpriseRepositoryImpl.dart';
+import 'package:sppp/src/data/repository/EvidenceRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/MercadoPagoRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/OrderRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/RolesRepositoryImpl.dart';
@@ -21,11 +25,13 @@ import 'package:sppp/src/data/repository/ShoppingBagRepositoryImpl.dart';
 import 'package:sppp/src/data/repository/UsersRepositoryImpl.dart';
 import 'package:sppp/src/domain/models/AuthResponse.dart';
 import 'package:sppp/src/domain/models/ShoppingBagRepository.dart';
+import 'package:sppp/src/domain/repository/ActivitiesRepository.dart';
 import 'package:sppp/src/domain/repository/AddressRepository.dart';
 import 'package:sppp/src/domain/repository/AuthRepository.dart';
 import 'package:sppp/src/domain/repository/CategoryRepository.dart';
 import 'package:sppp/src/domain/repository/CoursesRepository.dart';
 import 'package:sppp/src/domain/repository/EnterpriseRepository.dart';
+import 'package:sppp/src/domain/repository/EvidenceRepository.dart';
 import 'package:sppp/src/domain/repository/MercadoPagoRepository.dart';
 import 'package:sppp/src/domain/repository/OrderRepository.dart';
 import 'package:sppp/src/domain/repository/RolesRepository.dart';
@@ -41,6 +47,11 @@ import 'package:sppp/src/domain/useCases/ShoppingBag/DeleteShoppingBagUseCase.da
 import 'package:sppp/src/domain/useCases/ShoppingBag/GetCoursesShoppingBagUseCase.dart';
 import 'package:sppp/src/domain/useCases/ShoppingBag/GetTotalShoppingBagUseCase.dart';
 import 'package:sppp/src/domain/useCases/ShoppingBag/ShoppingBagUseCases.dart';
+import 'package:sppp/src/domain/useCases/activities/ActivityUseCase.dart';
+import 'package:sppp/src/domain/useCases/activities/CreateActivityUseCase.dart';
+import 'package:sppp/src/domain/useCases/activities/DeleteActivityUseCase.dart';
+import 'package:sppp/src/domain/useCases/activities/GetActivitiesUseCase.dart';
+import 'package:sppp/src/domain/useCases/activities/UpdateActivitiesUseCase.dart';
 import 'package:sppp/src/domain/useCases/address/AddressUseCases.dart';
 import 'package:sppp/src/domain/useCases/address/CreateAddressUseCase.dart';
 import 'package:sppp/src/domain/useCases/address/DeleteAddressFromSessionUseCase.dart';
@@ -69,6 +80,11 @@ import 'package:sppp/src/domain/useCases/enterprise/DeleteEnterpriseUseCase.dart
 import 'package:sppp/src/domain/useCases/enterprise/EnterpriseUseCases.dart';
 import 'package:sppp/src/domain/useCases/enterprise/GetEnterpriseUseCases.dart';
 import 'package:sppp/src/domain/useCases/enterprise/UpdateEnterpriseUseCase.dart';
+import 'package:sppp/src/domain/useCases/evidences/CreateEvidenceUseCase.dart';
+import 'package:sppp/src/domain/useCases/evidences/DeleteEvidenceUseCase.dart';
+import 'package:sppp/src/domain/useCases/evidences/EvidenceUseCases.dart';
+import 'package:sppp/src/domain/useCases/evidences/GetEvidencesUseCase.dart';
+import 'package:sppp/src/domain/useCases/evidences/UpdateEvidenceUseCase.dart';
 import 'package:sppp/src/domain/useCases/orders/GetOrdersSessionUseCase.dart';
 import 'package:sppp/src/domain/useCases/orders/GetUserOrdersUseCase.dart';
 import 'package:sppp/src/domain/useCases/orders/OrdersUseCases.dart';
@@ -125,6 +141,11 @@ abstract class AppModule {
   @injectable
   OrderService get orderService => OrderService(token);
 
+  @injectable
+  ActivitiesService get activitiesService => ActivitiesService(token);
+  @injectable
+  EvidenceService get evidenceService => EvidenceService(token);
+
   //REPOSITORY
   @injectable
   AuthRepository get authRepository =>
@@ -163,6 +184,14 @@ abstract class AppModule {
   @injectable
   MercadoPagoRepository get mercadoPagoRepository =>
       MercadoPagoRepositoryImpl(mercadoPagoService);
+
+  @injectable
+  ActivitiesRepository get activitiesRepository =>
+      ActivitiesRepositoryImpl(activitiesService);
+
+  @injectable
+  EvidenceRepository get evidenceRepository =>
+      EvidenceRepositoryImpl(evidenceService);
 
   //USECASES
   @injectable
@@ -245,6 +274,21 @@ abstract class AppModule {
       createCardToken: CreateCardTokenUseCase(mercadoPagoRepository),
       getInstallments: GetInstallmentsUseCase(mercadoPagoRepository),
       createPaymentUseCase: CreatePaymentUseCase(mercadoPagoRepository));
+
+  @injectable
+  ActivitiesUseCases get activitiesUseCases => ActivitiesUseCases(
+      create: CreateActivitiesUseCase(activitiesRepository),
+      getActivities: GetActivitiesUseCase(activitiesRepository),
+      update: UpdateActivitiesUseCase(activitiesRepository),
+      delete: DeleteActivityUseCase(activitiesRepository));
+
+  @injectable
+  EvidenceUseCases get evidenceUseCases => EvidenceUseCases(
+    create: CreateEvidenceUseCase(evidenceRepository),
+    getEvidences: GetEvidencesUseCase(evidenceRepository),
+    update: UpdateEvidenceUseCase(evidenceRepository),
+    delete: DeleteEvidenceUseCase(evidenceRepository),
+  );
 }
 
 

@@ -13,7 +13,7 @@ class OrderService {
 
 Future<Resource<List<Order>>> getUserOrder(String idclient) async {
   try {
-    Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/orders/$idclient');
+    Uri url = Uri.https(ApiConfig.API_ECOMMERCE, '/orders/my-order');
     Map<String, String> headers = {
       "Content-Type": "application/json",
       "Authorization": await token
