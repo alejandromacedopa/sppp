@@ -1,6 +1,4 @@
-import 'package:sppp/src/domain/models/Address.dart';
 import 'package:sppp/src/domain/models/Order.dart';
-import 'package:sppp/src/domain/repository/AddressRepository.dart';
 import 'package:sppp/src/domain/repository/OrderRepository.dart';
 
 class SaveOrdersInSessionUseCase {

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sppp/main.dart';
 import 'package:sppp/src/presentation/pages/student/ShoppingBag/StudentShoppingBagPage.dart';
 import 'package:sppp/src/presentation/pages/student/category/list/StudentCategoryListPage.dart';
-import 'package:sppp/src/presentation/pages/student/coruses/list/StudentCoursesListPage.dart';
 import 'package:sppp/src/presentation/pages/student/home/bloc/StudentHomeBloc.dart';
 import 'package:sppp/src/presentation/pages/student/home/bloc/StudentHomeEvent.dart';
 import 'package:sppp/src/presentation/pages/student/home/bloc/StudentHomeState.dart';
