@@ -46,8 +46,8 @@ class StudentPaymentStatusContent extends StatelessWidget {
           Navigator.pushNamedAndRemoveUntil(
               context, 'student/home', (route) => false);
         },
-        color: Colors.green,
-        colorText: Colors.white,
+        color: Colors.white,
+        colorText: Colors.black,
         borderRadius: 30,
         padding: EdgeInsets.symmetric(vertical: 15),
       ),
@@ -120,7 +120,7 @@ class StudentPaymentStatusContent extends StatelessWidget {
             ? Icons.check_circle
             : Icons.cancel,
         color: paymentResponse?.status == 'approved'
-            ? Colors.greenAccent
+            ? Colors.white
             : Colors.redAccent,
         size: 150,
       ),
@@ -131,7 +131,7 @@ class StudentPaymentStatusContent extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      color: Colors.grey, // Fondo azul marino
+      color: Colors.green, // Fondo azul marino
     );
   }
 
@@ -139,7 +139,7 @@ class StudentPaymentStatusContent extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: 10), // Menos espacio debajo del logo
       child: Image.asset(
-        'assets/img/spplogo.png', // Aquí se pone el logo que agregarás
+        'assets/img/logofinal.png', // Aquí se pone el logo que agregarás
         width: 350, // Tamaño del logo
         height: 350, // Tamaño del logo
         fit: BoxFit.contain, // Asegura que la imagen no se distorsione

@@ -31,7 +31,8 @@ class ProfileInfoContent extends StatelessWidget {
       height: double.infinity,
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.indigo, Colors.white], // Degradado azul marino a blanco
+          colors: [Colors.indigo, Colors.white],
+          // Degradado azul marino a blanco
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
@@ -42,7 +43,10 @@ class ProfileInfoContent extends StatelessWidget {
   Widget _cardProfileInfo(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      width: MediaQuery.of(context).size.width * 0.85, // Ancho más ajustado
+      width: MediaQuery
+          .of(context)
+          .size
+          .width * 0.85, // Ancho más ajustado
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.9), // Opacidad ligeramente baja
         borderRadius: BorderRadius.circular(30),
@@ -60,25 +64,31 @@ class ProfileInfoContent extends StatelessWidget {
           ListTile(
             title: Text(
               '${user?.name ?? ''} ${user?.lastname ?? ''}',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22), // Título más grande y en negrita
+              style: TextStyle(fontWeight: FontWeight.bold,
+                  fontSize: 22), // Título más grande y en negrita
             ),
-            subtitle: Text('Nombre de usuario', style: TextStyle(color: Colors.grey[600])),
+            subtitle: Text(
+                'Nombre de usuario', style: TextStyle(color: Colors.grey[600])),
             leading: Icon(Icons.person, color: Colors.indigo),
           ),
           ListTile(
             title: Text(
               user?.email ?? '',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), // Texto más grande y negrita
+              style: TextStyle(fontSize: 18,
+                  fontWeight: FontWeight.bold), // Texto más grande y negrita
             ),
-            subtitle: Text('Correo electrónico', style: TextStyle(color: Colors.grey[600])),
+            subtitle: Text('Correo electrónico',
+                style: TextStyle(color: Colors.grey[600])),
             leading: Icon(Icons.email, color: Colors.indigo),
           ),
           ListTile(
             title: Text(
               user?.phone ?? '',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), // Texto más grande y negrita
+              style: TextStyle(fontSize: 18,
+                  fontWeight: FontWeight.bold), // Texto más grande y negrita
             ),
-            subtitle: Text('Teléfono', style: TextStyle(color: Colors.grey[600])),
+            subtitle: Text(
+                'Teléfono', style: TextStyle(color: Colors.grey[600])),
             leading: Icon(Icons.phone, color: Colors.indigo),
           ),
           SizedBox(height: 10),
@@ -99,19 +109,27 @@ class ProfileInfoContent extends StatelessWidget {
 
   Widget _imageProfile() {
     return Container(
-      margin: EdgeInsets.only(top: 40), // Mejora el espaciado con el encabezado
+      margin: EdgeInsets.only(top: 40),
+      // Mejora el espaciado con el encabezado
       width: 150,
       height: 150,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(color: Colors.white, width: 4), // Borde más grueso
-        image: user != null
+        image: user != null && user!.image != null && user!.image!.isNotEmpty
             ? DecorationImage(
           image: NetworkImage(user!.image!),
           fit: BoxFit.cover,
         )
             : null,
       ),
+      child: user == null || user!.image == null || user!.image!.isEmpty
+          ? Icon(
+        Icons.person,
+        size: 80,
+        color: Colors.grey[400],
+      ) // Placeholder si no hay imagen
+          : null,
     );
   }
 }
