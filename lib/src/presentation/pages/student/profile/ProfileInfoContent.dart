@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sppp/src/domain/models/User.dart';
 
 class ProfileInfoContent extends StatelessWidget {
-  User? user;
+  User? user; //fix
 
   ProfileInfoContent(this.user);
 
