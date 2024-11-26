@@ -108,7 +108,7 @@ class StudentCoursesDetailContent extends StatelessWidget {
                 // Navegar a la página del carrito
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => StudentHomePage()), // Navegar a CartPage
+                  MaterialPageRoute(builder: (context) => StudentShoppingBagPage()), // Navegar a CartPage
                 );
               },
             ),

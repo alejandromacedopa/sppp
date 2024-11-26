@@ -5,111 +5,48 @@ import 'package:sppp/src/presentation/pages/student/address/list/bloc/StudentAdd
 import 'package:sppp/src/presentation/pages/student/address/list/bloc/StudentAddressListState.dart';
 
 class StudentAddressListItem extends StatelessWidget {
-  final StudentAddressListBloc? bloc;
-  final StudentAddressListState state;
-  final Address address;
-  final int index;
+  StudentAddressListBloc? bloc;
+  StudentAddressListState state;
+  Address address;
+  int index;
 
   StudentAddressListItem(this.bloc, this.state, this.address, this.index);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 8,
-              offset: Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Radio Button with Custom Design
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: state.radioValue == index
-                        ? Theme.of(context).primaryColor
-                        : Colors.grey[300]!,
-                    width: 2,
-                  ),
-                ),
-                child: Radio<int>(
-                  value: index,
-                  groupValue: state.radioValue,
-                  onChanged: (value) {
-                    if (value != null) {
-                      bloc?.add(ChangeRadioValue(radioValue: value, address: address));
-                    }
-                  },
-                  activeColor: Theme.of(context).primaryColor,
-                ),
-              ),
-              const SizedBox(width: 16.0),
-              // Address Details
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      address.address,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Color(0xFF333333),
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 6.0),
-                    Text(
-                      address.neighborhood,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[600],
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 16.0),
-              // Delete Button with Tooltip
-              Tooltip(
-                message: "Eliminar dirección",
-                child: GestureDetector(
-                  onTap: () {
-                    bloc?.add(DeleteAddress(id: address.id!));
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.red.withOpacity(0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.delete,
-                      color: Colors.red,
-                      size: 24.0,
-                    ),
-                  ),
-                ),
-              ),
-            ],
+    return Column(
+      children: [
+        ListTile(
+          leading: Radio(
+            value: index,
+            groupValue: state.radioValue,
+            onChanged: (value) {
+              bloc?.add(ChangeRadioValue(radioValue: value!, address: address));
+            },
+          ),
+          trailing: IconButton(
+              onPressed: () {
+                bloc?.add(DeleteAddress(id: address.id!));
+              },
+              icon: Icon(
+                Icons.delete,
+                color: Colors.red,
+              )),
+          title: Text(
+            address.address,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          subtitle: Text(
+            address.neighborhood,
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
-      ),
+        Divider(
+          color: Colors.grey[300],
+          indent: 30,
+          endIndent: 30,
+        )
+      ],
     );
   }
 }

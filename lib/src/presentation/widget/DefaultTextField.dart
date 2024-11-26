@@ -8,10 +8,12 @@ class DefaultTextField extends StatelessWidget {
   Color? color;
   IconData icon;
   bool obscureText;
+  final Widget? suffixIcon; // Agregado
   Function(String text) onChange;
   String? Function (String?)? validator;
 
   DefaultTextField({
+    this.suffixIcon,
     Key? key,
     required this.label,
     this.errorText,

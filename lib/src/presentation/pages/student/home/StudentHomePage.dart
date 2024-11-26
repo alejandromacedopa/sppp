@@ -23,10 +23,10 @@ class _StudentHomePage extends State<StudentHomePage> with SingleTickerProviderS
   late Animation<double> _lineAnimation;
 
   final List<Widget> pageList = <Widget>[
-    //AdminEvidenceListPage(),
+    AdminEvidenceListPage(),
     StudentCategoryListPage(),
     StudentOrdersListPage(),
-    StudentShoppingBagPage(),
+   // StudentShoppingBagPage(),
     ProfileInfoPage(),
 
   ];
@@ -200,11 +200,11 @@ class _StudentHomePage extends State<StudentHomePage> with SingleTickerProviderS
                 }
               },
               items: [
-                _buildNavItem(Icons.category, 'Cursos', state.pageIndex == 0),
-                _buildNavItem(Icons.shopping_cart_checkout, 'Compras', state.pageIndex == 1),
-                _buildNavItem(Icons.shopping_bag, 'Carrito', state.pageIndex == 2),
-                _buildNavItem(Icons.edit, 'Perfil', state.pageIndex == 3),
-                _buildNavItem(Icons.logout, 'Cerrar Sesión', state.pageIndex == 4, color: Colors.redAccent),
+                _buildNavItem(Icons.category, 'Evidencia', state.pageIndex == 0),
+                _buildNavItem(Icons.category, 'Cursos', state.pageIndex == 1),
+                _buildNavItem(Icons.shopping_cart_checkout, 'Compras', state.pageIndex == 2),
+                _buildNavItem(Icons.edit, 'Perfil', state.pageIndex == 4),
+                _buildNavItem(Icons.logout, 'Cerrar Sesión', state.pageIndex == 5, color: Colors.redAccent),
               ],
               selectedItemColor: Colors.blue.shade700,
               unselectedItemColor: Colors.grey.shade400,
